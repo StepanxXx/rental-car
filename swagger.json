@@ -1,0 +1,319 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Rental Car API",
+    "version": "1.0.1",
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    },
+    "description": "API for rental car"
+  },
+  "servers": [
+    {
+      "url": "https://car-rental-api.goit.study",
+      "description": "Production server"
+    }
+  ],
+  "security": [],
+  "tags": [
+    {
+      "name": "Cars",
+      "description": "Operations about cars"
+    }
+  ],
+  "paths": {
+    "/cars": {
+      "get": {
+        "tags": ["Cars"],
+        "operationId": "getCarsList",
+        "summary": "Get a list of cars",
+        "parameters": [
+          {
+            "name": "brand",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "price",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "minMileage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "maxMileage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "perPage",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "required": false,
+            "schema": {
+              "type": "integer"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object"
+                },
+                "example": {
+                  "cars": [
+                    {
+                      "id": "11a3ab35-07b8-4336-b06b-602cdc309f2c",
+                      "year": 2008,
+                      "brand": "Buick",
+                      "model": "Enclave",
+                      "type": "SUV",
+                      "img": "https://ac.goit.global/car-rental-task/9582-ai.jpg",
+                      "description": "The Buick Enclave is a stylish and spacious SUV known for its comfortable ride and luxurious features.",
+                      "fuelConsumption": "10.5",
+                      "engine": "3.6L V6",
+                      "features": [
+                        "Leather seats",
+                        "Panoramic sunroof",
+                        "Premium audio system",
+                        "Power liftgate",
+                        "Remote start",
+                        "Blind-spot monitoring"
+                      ],
+                      "rentalPrice": "40",
+                      "rentalCompany": "Luxury Car Rentals",
+                      "location": {
+                        "country": "Ukraine",
+                        "city": "Kiev",
+                        "address": "123 Example Street"
+                      },
+                      "rentalConditions": [
+                        "Minimum age: 25",
+                        "Valid driver's license",
+                        "Security deposit required"
+                      ],
+                      "mileage": 5858
+                    }
+                  ],
+                  "totalCars": 1,
+                  "page": 1,
+                  "totalPages": 1
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid parameter format"
+          }
+        }
+      }
+    },
+    "/cars/filters": {
+      "get": {
+        "tags": ["Cars"],
+        "operationId": "getCarsFilters",
+        "summary": "Get available filter values for cars (brands and price range)",
+        "responses": {
+          "200": {
+            "description": "Filter metadata",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "brands": {
+                      "type": "array",
+                      "items": {
+                        "type": "string"
+                      }
+                    },
+                    "price": {
+                      "type": "object",
+                      "properties": {
+                        "min": {
+                          "type": "number"
+                        },
+                        "max": {
+                          "type": "number"
+                        }
+                      }
+                    }
+                  }
+                },
+                "example": {
+                  "brands": ["Ford", "Toyota", "Honda"],
+                  "price": {
+                    "min": 10,
+                    "max": 120
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{id}": {
+      "get": {
+        "tags": ["Cars"],
+        "operationId": "getOneCar",
+        "summary": "Get information about the car by ID",
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "Car ID",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Information about the car",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "example": {
+                    "id": "11a3ab35-07b8-4336-b06b-602cdc309f2c",
+                    "year": 2008,
+                    "brand": "Buick",
+                    "model": "Enclave",
+                    "type": "SUV",
+                    "img": "https://ac.goit.global/car-rental-task/9582-ai.jpg",
+                    "description": "The Buick Enclave is a stylish and spacious SUV known for its comfortable ride and luxurious features.",
+                    "fuelConsumption": "10.5",
+                    "engine": "3.6L V6",
+                    "features": [
+                      "Leather seats",
+                      "Panoramic sunroof",
+                      "Premium audio system",
+                      "Power liftgate",
+                      "Remote start",
+                      "Blind-spot monitoring"
+                    ],
+                    "rentalPrice": "40",
+                    "rentalCompany": "Luxury Car Rentals",
+                    "location": {
+                      "country": "Ukraine",
+                      "city": "Kiev",
+                      "address": "123 Example Street"
+                    },
+                    "rentalConditions": [
+                      "Minimum age: 25",
+                      "Valid driver's license",
+                      "Security deposit required"
+                    ],
+                    "mileage": 5858
+                  }
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car not found"
+          }
+        }
+      }
+    },
+    "/cars/{carId}/booking-requests": {
+      "post": {
+        "tags": ["Cars"],
+        "operationId": "createBookingRequest",
+        "summary": "Create booking request for a car",
+        "parameters": [
+          {
+            "name": "carId",
+            "in": "path",
+            "required": true,
+            "description": "Car ID",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "type": "string"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "comment": {
+                    "type": "string"
+                  }
+                },
+                "required": ["name", "email"]
+              },
+              "example": {
+                "name": "John Doe",
+                "email": "john@example.com",
+                "comment": "I would like to rent this car next weekend."
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Booking request created",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "example": {
+                  "message": "Booking request for Buick Enclave accepted. We will contact you at john@example.com."
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid request"
+          }
+        }
+      }
+    }
+  },
+  "components": {}
+}
