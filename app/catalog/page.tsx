@@ -77,14 +77,7 @@ const Catalog = async () => {
   await queryClient
     .query({
       queryKey: ['filtersOptions'],
-      queryFn: async () => {
-        const response = await getCarsFilters()
-        if(!response) {
-          return []
-        }
-        console.log(response);
-        return response
-      },
+      queryFn: getCarsFilters,
       staleTime: 1000 * 60 * 10
     })
     .catch(() => undefined);
