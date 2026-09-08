@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import { Suspense } from 'react';
 import { type GetCarsParams } from '@/lib/api';
 import CatalogClient from './Catalog.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
@@ -8,9 +9,9 @@ const baseUrl = getBaseUrl();
 export async function generateMetadata({
   searchParams,
 }: {
-  searchParams: GetCarsParams;
+  searchParams: Promise<GetCarsParams>;
 }): Promise<Metadata> {
-  const { brand, price, minMileage, maxMileage } = searchParams;
+  const { brand, price, minMileage, maxMileage } = await searchParams;
   const title =
     brand || price || minMileage || maxMileage
       ? 'RentalCars catalog filtered by: ' + [
@@ -59,7 +60,11 @@ export async function generateMetadata({
 }
 
 const Catalog = async () => {
-  return <CatalogClient />;
+  return (
+    <Suspense fallback={<div className="container">Loading catalog...</div>}>
+      <CatalogClient />
+    </Suspense>
+  );
 };
 
 export default Catalog;

@@ -27,8 +27,24 @@ export interface CarsListResponse {
   totalPages: number;
 }
 
-export const getCars = async (params?: GetCarsParams): Promise<CarsListResponse> => {
-  const response = await api.get<CarsListResponse>('/cars', { params });
+export const getCars = async ({
+  brand,
+  price,
+  minMileage,
+  maxMileage,
+  perPage = 12,
+  page = 1,
+}: GetCarsParams): Promise<CarsListResponse> => {
+  const response = await api.get<CarsListResponse>('/cars', {
+    params: {
+      ...(brand && { brand }),
+      ...(price && { price }),
+      ...(minMileage && { minMileage }),
+      ...(maxMileage && { maxMileage }),
+      perPage,
+      page,
+    },
+  });
   return response.data;
 };
 
@@ -61,6 +77,9 @@ export const createBookingRequest = async (
   carId: string,
   data: BookingRequestData
 ): Promise<BookingResponse> => {
-  const response = await api.post<BookingResponse>(`/cars/${carId}/booking-requests`, data);
+  const response = await api.post<BookingResponse>(
+    `/cars/${carId}/booking-requests`,
+    data
+  );
   return response.data;
 };
