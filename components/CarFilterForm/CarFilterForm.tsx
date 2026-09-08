@@ -15,40 +15,6 @@ const toOptionalNumber = (value: string) => {
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
 };
 
-const { brands: brandsList, price: priceRange }: CarsFiltersResponse = {
-  brands: [
-    'Aston Martin',
-    'Audi',
-    'BMW',
-    'Bentley',
-    'Buick',
-    'Chevrolet',
-    'Chrysler',
-    'GMC',
-    'HUMMER',
-    'Hyundai',
-    'Kia',
-    'Lamborghini',
-    'Land Rover',
-    'Lincoln',
-    'MINI',
-    'Mercedes-Benz',
-    'Mitsubishi',
-    'Nissan',
-    'Pontiac',
-    'Subaru',
-    'Volvo',
-  ],
-  price: {
-    min: 30,
-    max: 80,
-  },
-};
-
-const priceList = [...Array(priceRange.max - priceRange.min + 1)]
-  .map((_, index) => index + priceRange.min)
-  .filter(num => num % 10 === 0);
-
 const normalizeFilters = (filters: CarFilters): CarFilters => ({
   ...filters,
   brand: filters.brand?.trim() ?? '',
@@ -56,10 +22,20 @@ const normalizeFilters = (filters: CarFilters): CarFilters => ({
 
 interface CarFilterFormProps {
   onSearch: (filters: CarFilters) => void;
+  onClear: () => void;
+  filtersOptions: CarsFiltersResponse;
 }
 
-const CarFilterForm = ({ onSearch }: CarFilterFormProps) => {
+const CarFilterForm = ({
+  onSearch,
+  onClear,
+  filtersOptions: { brands: brandsList, price: priceRange },
+}: CarFilterFormProps) => {
   const fieldId = useId();
+
+  const priceList = [...Array(priceRange.max - priceRange.min + 1)]
+    .map((_, index) => index + priceRange.min)
+    .filter(num => num % 10 === 0);
 
   const setFilters = useCarFilterStore(state => state.setFilters);
   const filters = useCarFilterStore(state => state.filters);
@@ -88,6 +64,16 @@ const CarFilterForm = ({ onSearch }: CarFilterFormProps) => {
     const nextFilters = normalizeFilters(values);
     setFilters(nextFilters);
     onSearch(nextFilters);
+  };
+
+  const handleClearFilters = () => {
+    setFilters({
+      brand: '',
+      price: undefined,
+      minMileage: undefined,
+      maxMileage: undefined,
+    });
+    onClear();
   };
 
   return (
@@ -158,6 +144,13 @@ const CarFilterForm = ({ onSearch }: CarFilterFormProps) => {
 
       <button type="submit" className={css.submitBtn}>
         Search
+      </button>
+      <button
+        type="button"
+        onClick={handleClearFilters}
+        className={css.clearBtn}
+      >
+        Clear filters
       </button>
     </form>
   );

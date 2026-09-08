@@ -1,5 +1,11 @@
 import { Metadata } from 'next';
+import {
+  dehydrate,
+  HydrationBoundary,
+  QueryClient,
+} from '@tanstack/react-query';
 import { Suspense } from 'react';
+import { getCarsFilters } from '@/lib/api';
 import type { GetCarsParams } from '@/types/cars';
 import CatalogClient from './Catalog.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
@@ -14,21 +20,27 @@ export async function generateMetadata({
   const { brand, price, minMileage, maxMileage } = await searchParams;
   const title =
     brand || price || minMileage || maxMileage
-      ? 'RentalCars catalog filtered by: ' + [
+      ? 'RentalCars catalog filtered by: ' +
+        [
           brand ? 'brand: ' + brand : '',
           price ? 'price: ' + price : '',
           minMileage ? 'minMileage: ' + minMileage : '',
           maxMileage ? 'maxMileage: ' + maxMileage : '',
-        ].filter(Boolean).join(', ')
+        ]
+          .filter(Boolean)
+          .join(', ')
       : 'RentalCar catalog - View and manage all cars';
   const description =
     brand || price || minMileage || maxMileage
-      ? 'View and manage RentalCar cars filtered by: ' + [
+      ? 'View and manage RentalCar cars filtered by: ' +
+        [
           brand ? 'brand: ' + brand : '',
           price ? 'price: ' + price : '',
           minMileage ? 'minMileage: ' + minMileage : '',
           maxMileage ? 'maxMileage: ' + maxMileage : '',
-        ].filter(Boolean).join(', ')
+        ]
+          .filter(Boolean)
+          .join(', ')
       : 'View and manage RentalCar cars.';
 
   return {
@@ -60,10 +72,29 @@ export async function generateMetadata({
 }
 
 const Catalog = async () => {
+  const queryClient = new QueryClient();
+
+  await queryClient
+    .query({
+      queryKey: ['filtersOptions'],
+      queryFn: async () => {
+        const response = await getCarsFilters()
+        if(!response) {
+          return []
+        }
+        console.log(response);
+        return response
+      },
+      staleTime: 1000 * 60 * 10
+    })
+    .catch(() => undefined);
+
   return (
-    <Suspense fallback={<div className="container">Loading catalog...</div>}>
-      <CatalogClient />
-    </Suspense>
+    <HydrationBoundary state={dehydrate(queryClient)}>
+      <Suspense fallback={<div className="container">Loading catalog...</div>}>
+        <CatalogClient />
+      </Suspense>
+    </HydrationBoundary>
   );
 };
 

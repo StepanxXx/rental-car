@@ -5,8 +5,8 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import CarFilterForm from '@/components/CarFilterForm/CarFilterForm';
 import { useCarFilterStore } from '@/lib/store/filterStore';
-import { getCars } from '@/lib/api';
-import type { Car, CarFilters } from '@/types/cars';
+import { getCars, getCarsFilters } from '@/lib/api';
+import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
 import { PER_PAGE, INITIAL_PAGE } from '@/lib/const';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
@@ -47,6 +47,16 @@ const CatalogClient = () => {
     staleTime: 1000 * 10,
   });
 
+    const {
+      data: filtersOptions,
+      isLoading: isFilterLoading,
+    } = useQuery({
+      queryKey: ['filtersOptions'],
+      queryFn: getCarsFilters,
+      refetchOnMount: false,
+      staleTime: 1000 * 60 * 10
+    });
+
   const handleSearch = (nextFilters: CarFilters) => {
     const params = new URLSearchParams(searchParams.toString());
 
@@ -63,13 +73,21 @@ const CatalogClient = () => {
     router.push(query ? `${pathname}?${query}` : pathname);
   };
 
+  const handleClear = () => {
+    router.push(pathname);
+  };
+
   const cars: Car[] = data?.cars ?? [];
 
   return (
     <div className="container">
-      <CarFilterForm onSearch={handleSearch} />
+      <CarFilterForm
+        onSearch={handleSearch}
+        onClear={handleClear}
+        filtersOptions ={filtersOptions as CarsFiltersResponse }
+      />
 
-      {isLoading && <p>Loading cars...</p>}
+      {(isLoading || isFilterLoading) && <p>Loading cars...</p>}
       {isFetching && !isLoading && <p>Updating cars...</p>}
       {isError && <p>Could not load cars.</p>}
       {!isLoading && !isError && <pre>{JSON.stringify(cars, null, 2)}</pre>}
