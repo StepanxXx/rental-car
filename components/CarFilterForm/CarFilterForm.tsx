@@ -78,7 +78,11 @@ const CarFilterForm = ({ onSearch }: CarFilterFormProps) => {
     setFilters(nextFilters);
   };
 
-  const handleSubmit = async (formData: FormData) => {
+  const handleSubmit = async (event: React.SubmitEvent) => {
+    event.preventDefault();
+    const form = event.currentTarget as HTMLFormElement;
+
+    const formData = new FormData(form);
     const values = Object.fromEntries(formData) as CarFilters;
 
     const nextFilters = normalizeFilters(values);
@@ -87,7 +91,7 @@ const CarFilterForm = ({ onSearch }: CarFilterFormProps) => {
   };
 
   return (
-    <form action={handleSubmit} noValidate className={css.filterForm}>
+    <form onSubmit={handleSubmit} noValidate className={css.filterForm}>
       <label className={css.label}>
         Car brand
         <select
