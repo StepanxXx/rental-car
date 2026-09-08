@@ -1,14 +1,12 @@
 'use client';
 
 import { useId } from 'react';
-import { type GetCarsParams, type CarsFiltersResponse } from '@/lib/api';
 import { useCarFilterStore } from '@/lib/store/filterStore';
+import type { CarFilters, CarsFiltersResponse } from '@/types/cars';
 
 import css from './CarFilterForm.module.css';
 
-type FilterKey = 'brand' | 'price' | 'minMileage' | 'maxMileage';
-
-export type CarFilters = Pick<GetCarsParams, FilterKey>;
+type FilterKey = keyof CarFilters;
 
 const toOptionalNumber = (value: string) => {
   if (!value.trim()) return undefined;

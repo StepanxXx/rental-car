@@ -1,14 +1,14 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { GetCarsParams } from '@/lib/api';
+import type { CarFilters } from '@/types/cars';
 
 type CarFilterStore = {
-  filters: GetCarsParams;
-  setFilters: (filters: GetCarsParams) => void;
+  filters: CarFilters;
+  setFilters: (filters: CarFilters) => void;
   clearFilters: () => void;
 };
 
-const initialDraft: GetCarsParams = {
+const initialDraft: CarFilters = {
   brand: '',
   price: undefined,
   minMileage: undefined,

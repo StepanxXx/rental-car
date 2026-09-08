@@ -26,3 +26,22 @@ export type PriceRange = {
   min: number;
   max: number;
 };
+
+export type GetCarsParams = {
+  brand?: string;
+  price?: number;
+  minMileage?: number;
+  maxMileage?: number;
+  perPage?: number;
+  page?: number;
+};
+
+export type CarFilters = Pick<
+  GetCarsParams,
+  'brand' | 'price' | 'minMileage' | 'maxMileage'
+>;
+
+export interface CarsFiltersResponse {
+  brands: string[];
+  price: PriceRange;
+}

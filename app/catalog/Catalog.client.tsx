@@ -3,12 +3,10 @@
 import { useState, useEffect } from 'react';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
-import CarFilterForm, {
-  type CarFilters,
-} from '@/components/CarFilterForm/CarFilterForm';
+import CarFilterForm from '@/components/CarFilterForm/CarFilterForm';
 import { useCarFilterStore } from '@/lib/store/filterStore';
-import { getCars, type GetCarsParams } from '@/lib/api';
-import type { Car } from '@/types/cars';
+import { getCars } from '@/lib/api';
+import type { Car, CarFilters, GetCarsParams } from '@/types/cars';
 import { PER_PAGE, INITIAL_PAGE } from '@/lib/const';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
@@ -70,13 +68,11 @@ const CatalogContent = ({ initialSearchParams }: CatalogContentProps) => {
   }, [initialSearchParams]);
 
   useEffect(() => {
-    // if  urlSearchParams is empty and  currentFilters has query parameters  of CarFilters set qury parameters in url
     if (
       !initialSearchParams &&
       FILTER_KEYS.some(key => currentFilters[key] !== '')
     ) {
       const nextFilters = normalizeFilters(currentFilters);
-      console.log(nextFilters);
       const query = new URLSearchParams(
         nextFilters as Record<string, string>
       );

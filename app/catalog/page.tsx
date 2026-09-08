@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { Suspense } from 'react';
-import { type GetCarsParams } from '@/lib/api';
+import type { GetCarsParams } from '@/types/cars';
 import CatalogClient from './Catalog.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
 
