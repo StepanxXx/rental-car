@@ -1,49 +1,112 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with
-[`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# RentalCar
+
+A web application for finding and renting cars. The project is built with
+Next.js, TypeScript, React Query, and CSS Modules.
+
+## Current Status
+
+- Responsive home page with a hero section
+- Shared header and navigation between pages
+- `/catalog` route (currently a placeholder)
+- Configured API client for cars, filters, and rental requests
+- React Query and React Query Devtools integration
+- Open Graph and Twitter metadata
+
+## Tech Stack
+
+- Next.js 16 (App Router)
+- React 19
+- TypeScript
+- TanStack React Query
+- Axios
+- Zustand
+- CSS Modules
+- ESLint and Prettier
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 20+
+- npm
+
+### Installation
+
+```bash
+git clone <repository-url>
+cd rental-car
+npm install
+```
+
+Create a `.env` file in the project root:
+
+```env
+NEXT_PUBLIC_CAR_RENTAL_URL=https://your-api.example.com
+```
+
+You can also provide the following optional variables:
+
+```env
+# Public site URL used in metadata
+NEXT_PUBLIC_SITE_URL=https://your-site.example.com
+
+# Allowed origin for local development
+NEXT_DEV_ORIGIN=your-dev-host.example.com
+```
+
+Start the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the
-result.
+The application will be available at
+[http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page
-auto-updates as you edit the file.
+## Available Scripts
 
-This project uses
-[`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts)
-to automatically optimize and load [Geist](https://vercel.com/font), a new font
-family for Vercel.
+| Command                | Description                              |
+| ---------------------- | ---------------------------------------- |
+| `npm run dev`          | Start the local development server       |
+| `npm run build`        | Create a production build                |
+| `npm run start`        | Start the production server              |
+| `npm run lint`         | Check the code with ESLint               |
+| `npm run format`       | Format files with Prettier               |
+| `npm run format:check` | Check formatting without modifying files |
 
-## Learn More
+## Routes
 
-To learn more about Next.js, take a look at the following resources:
+| Route      | Description                  |
+| ---------- | ---------------------------- |
+| `/`        | Home page                    |
+| `/catalog` | Car catalog (in development) |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js
-  features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## API Integration
 
-You can check out
-[the Next.js GitHub repository](https://github.com/vercel/next.js) - your
-feedback and contributions are welcome!
+The API base URL is configured through the `NEXT_PUBLIC_CAR_RENTAL_URL`
+environment variable. The client in `lib/api.ts` supports the following
+requests:
 
-## Deploy on Vercel
+- `GET /cars` — retrieve cars with pagination and filters
+- `GET /cars/filters` — retrieve available brands and the price range
+- `GET /cars/:id` — retrieve a specific car
+- `POST /cars/:id/booking-requests` — submit a rental request
 
-The easiest way to deploy your Next.js app is to use the
-[Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme)
-from the creators of Next.js.
+## Project Structure
 
-Check out our
-[Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying)
-for more details.
+```text
+app/          Pages, layout, and global styles
+components/   Reusable React components
+lib/          API client and utility functions
+public/       Static images and SVG files
+types/        TypeScript domain types
+swagger.json  API specification
+```
+
+## Pre-release Checks
+
+```bash
+npm run lint
+npm run format:check
+npm run build
+```
