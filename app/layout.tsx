@@ -4,10 +4,8 @@ import 'modern-normalize';
 import './reset.css';
 import './globals.css';
 import Header from '@/components/Header/Header';
-import Footer from '@/components/Footer/Footer';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
 import baseUrl from '@/lib/getBaseUrl';
-import path from 'path';
 
 const manrope = Manrope({
   subsets: ['latin'],
@@ -23,6 +21,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(baseUrl),
   title: 'RentalCar',
   description: 'Application for rental cars.',
   openGraph: {
@@ -54,12 +53,11 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body className={`${manrope.variable} ${inter.variable}`}>
         <TanStackProvider>
-          <Header/>
+          <Header />
           {children}
-          <Footer />
         </TanStackProvider>
       </body>
     </html>
