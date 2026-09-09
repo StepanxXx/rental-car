@@ -6,6 +6,7 @@ import css from './CustomSelect.module.css';
 type SelectEvent = { target: { name: string; value: string } };
 
 interface CustomSelectProps {
+  id: string;
   name: string;
   placeholder: string;
   list: string[] | number[];
@@ -17,6 +18,7 @@ interface CustomSelectProps {
   scrollbarSize?: number;
 }
 export function CustomSelect({
+  id,
   name,
   placeholder,
   list,
@@ -35,7 +37,7 @@ export function CustomSelect({
       }
       defaultValue={placeholder}
     >
-      <Select.Trigger className={`${css.trigger} ${className ?? ''}`}>
+      <Select.Trigger id={id} className={`${css.trigger} ${className ?? ''}`}>
         <Select.Value placeholder={placeholder}>
           {displayValuePrefix && value && `${displayValuePrefix}${value}`}
         </Select.Value>

@@ -95,6 +95,7 @@ const CarFilterForm = ({
         Car brand
         <span className={css.selectWrapper}>
           <CustomSelect
+            id={`${fieldId}-brand`}
             name="brand"
             className={css.select}
             contentClassName={css.selectContentBrand}
@@ -114,6 +115,7 @@ const CarFilterForm = ({
         Price/ 1 hour
         <span className={css.selectWrapper}>
           <CustomSelect
+            id={`${fieldId}-price`}
             name="price"
             className={css.select}
             contentClassName={css.selectContentPrice}
