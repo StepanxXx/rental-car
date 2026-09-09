@@ -57,10 +57,10 @@
   height: 44px;
   background-color: var(--light-blue);
   transition: background-color var(--transition-time);
-  }
-  
-  .linkBtn:hover,
-  .linkBtn:focus,
-  .linkBtn:active {
-    background-color: var(--dark-blue);
-  }
+}
+
+.linkBtn:hover,
+.linkBtn:focus,
+.linkBtn:active {
+  background-color: var(--dark-blue);
+}

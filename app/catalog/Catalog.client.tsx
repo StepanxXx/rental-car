@@ -47,16 +47,16 @@ const CatalogClient = () => {
     staleTime: 1000 * 10,
   });
 
-    const {
-      data: filtersOptions,
-      isLoading: isFilterLoading,
-      isError: isFilterError,
-    } = useQuery({
-      queryKey: ['filtersOptions'],
-      queryFn: getCarsFilters,
-      refetchOnMount: false,
-      staleTime: 1000 * 60 * 10
-    });
+  const {
+    data: filtersOptions,
+    isLoading: isFilterLoading,
+    isError: isFilterError,
+  } = useQuery({
+    queryKey: ['filtersOptions'],
+    queryFn: getCarsFilters,
+    refetchOnMount: false,
+    staleTime: 1000 * 60 * 10,
+  });
 
   const handleSearch = (nextFilters: CarFilters) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -92,7 +92,7 @@ const CatalogClient = () => {
 
       {(isLoading || isFilterLoading) && <p>Loading cars...</p>}
       {isFetching && !isLoading && <p>Updating cars...</p>}
-      {(isError || isFilterError)  && <p>Could not load cars.</p>}
+      {(isError || isFilterError) && <p>Could not load cars.</p>}
       {!isLoading && !isError && <pre>{JSON.stringify(cars, null, 2)}</pre>}
     </div>
   );

@@ -1,17 +1,17 @@
 :root {
-	--main: #101828;
-	--gray: #8d929a;
-	--gray-light: #dadde1;
-	--badges: #f2f4f7;
-	--inputs: #f7f7f7;
-	--white: #fff;
-	--button: #3470ff;
-	--button-hover: #0b44cd;
-	--light-blue: #00aad4;
-	--bg: #f5f5f5;
-	--dark-blue: #0095ba;
-	--error: #ec383b;
-	--error-light: #ffdfdf;
+  --main: #101828;
+  --gray: #8d929a;
+  --gray-light: #dadde1;
+  --badges: #f2f4f7;
+  --inputs: #f7f7f7;
+  --white: #fff;
+  --button: #3470ff;
+  --button-hover: #0b44cd;
+  --light-blue: #00aad4;
+  --bg: #f5f5f5;
+  --dark-blue: #0095ba;
+  --error: #ec383b;
+  --error-light: #ffdfdf;
   --transition-time: 250ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 

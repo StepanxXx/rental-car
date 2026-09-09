@@ -78,7 +78,7 @@ const Catalog = async () => {
     .query({
       queryKey: ['filtersOptions'],
       queryFn: getCarsFilters,
-      staleTime: 1000 * 60 * 10
+      staleTime: 1000 * 60 * 10,
     })
     .catch(() => undefined);
 

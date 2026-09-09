@@ -93,23 +93,34 @@ const CarFilterForm = ({
         htmlFor={`${fieldId}-brand`}
       >
         Car brand
-        <select
-          className={css.select}
-          id={`${fieldId}-brand`}
-          name="brand"
-          value={filters.brand ?? ''}
-          onChange={handleFilterChange}
-          aria-label="Car brand"
-        >
-          <option value="" disabled selected hidden>
-            Choose a brand
-          </option>
-          {brandsList.map(brand => (
-            <option key={brand} value={brand}>
-              {brand}
+        <span className={css.selectWrapper}>
+          <select
+            className={css.select}
+            id={`${fieldId}-brand`}
+            name="brand"
+            value={filters.brand ?? ''}
+            onChange={handleFilterChange}
+            aria-label="Car brand"
+          >
+            <option value="" disabled selected hidden>
+              Choose a brand
             </option>
-          ))}
-        </select>
+            {brandsList.map(brand => (
+              <option key={brand} value={brand}>
+                {brand}
+              </option>
+            ))}
+          </select>
+          <svg
+            className={css.selectIcon}
+            width="13"
+            height="7"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/icons.svg#icon-chevron-up" />
+          </svg>
+        </span>
       </label>
 
       <label
@@ -118,23 +129,34 @@ const CarFilterForm = ({
         htmlFor={`${fieldId}-price`}
       >
         Price/ 1 hour
-        <select
-          className={css.select}
-          id={`${fieldId}-price`}
-          name="price"
-          value={filters.price?.toString() ?? ''}
-          onChange={handleFilterChange}
-          aria-label={`Car price ${priceRange.min} - ${priceRange.max}`}
-        >
-          <option value="" disabled selected hidden>
-            Choose a price
-          </option>
-          {priceList.map(price => (
-            <option key={price} value={price}>
-              {price}
+        <span className={css.selectWrapper}>
+          <select
+            className={css.select}
+            id={`${fieldId}-price`}
+            name="price"
+            value={filters.price?.toString() ?? ''}
+            onChange={handleFilterChange}
+            aria-label={`Car price ${priceRange.min} - ${priceRange.max}`}
+          >
+            <option value="" disabled selected hidden>
+              Choose a price
             </option>
-          ))}
-        </select>
+            {priceList.map(price => (
+              <option key={price} value={price}>
+                {price}
+              </option>
+            ))}
+          </select>
+          <svg
+            className={css.selectIcon}
+            width="13"
+            height="7"
+            aria-hidden="true"
+            focusable="false"
+          >
+            <use href="/icons.svg#icon-chevron-up" />
+          </svg>
+        </span>
       </label>
       <fieldset className={css.mileageContainer}>
         <legend className={css.legend}>Car mileage / km</legend>
@@ -155,10 +177,7 @@ const CarFilterForm = ({
             placeholder="From"
           />
 
-          <label
-            htmlFor={`${fieldId}-maxMileage`}
-            className="visually-hidden"
-          >
+          <label htmlFor={`${fieldId}-maxMileage`} className="visually-hidden">
             To
           </label>
           <input
