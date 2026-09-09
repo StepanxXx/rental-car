@@ -86,10 +86,10 @@ const Catalog = async ({ searchParams }: CatalogProps) => {
 
   await Promise.all([
     queryClient
-      .prefetchQuery(filterOptionsQuery())
+      .query(filterOptionsQuery())
       .catch(err => console.error('SSR filters prefetch error:', err)),
     queryClient
-      .prefetchInfiniteQuery(carsInfiniteQuery(filters))
+      .infiniteQuery(carsInfiniteQuery(filters))
       .catch(err => console.error('SSR cars prefetch error:', err)),
   ]);
   return (
