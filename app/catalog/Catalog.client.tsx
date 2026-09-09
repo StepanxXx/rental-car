@@ -50,6 +50,7 @@ const CatalogClient = () => {
     const {
       data: filtersOptions,
       isLoading: isFilterLoading,
+      isError: isFilterError,
     } = useQuery({
       queryKey: ['filtersOptions'],
       queryFn: getCarsFilters,
@@ -81,15 +82,17 @@ const CatalogClient = () => {
 
   return (
     <div className="container">
-      <CarFilterForm
-        onSearch={handleSearch}
-        onClear={handleClear}
-        filtersOptions ={filtersOptions as CarsFiltersResponse }
-      />
+      {!isFilterLoading && !isFilterError && (
+        <CarFilterForm
+          onSearch={handleSearch}
+          onClear={handleClear}
+          filtersOptions={filtersOptions as CarsFiltersResponse}
+        />
+      )}
 
       {(isLoading || isFilterLoading) && <p>Loading cars...</p>}
       {isFetching && !isLoading && <p>Updating cars...</p>}
-      {isError && <p>Could not load cars.</p>}
+      {(isError || isFilterError)  && <p>Could not load cars.</p>}
       {!isLoading && !isError && <pre>{JSON.stringify(cars, null, 2)}</pre>}
     </div>
   );

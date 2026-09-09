@@ -9,7 +9,7 @@ import css from './CarFilterForm.module.css';
 type FilterKey = keyof CarFilters;
 
 const toOptionalNumber = (value: string) => {
-  if (!value.trim()) return undefined;
+  if (!value || !value.trim()) return undefined;
 
   const parsedValue = Number(value);
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
@@ -41,9 +41,7 @@ const CarFilterForm = ({
   const filters = useCarFilterStore(state => state.filters);
 
   const handleFilterChange = (
-    event: React.ChangeEvent<
-      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
-    >
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value } = event.target;
     const key = name as FilterKey;
@@ -58,10 +56,16 @@ const CarFilterForm = ({
     event.preventDefault();
     const form = event.currentTarget as HTMLFormElement;
 
-    const formData = new FormData(form);
-    const values = Object.fromEntries(formData) as CarFilters;
-
-    const nextFilters = normalizeFilters(values);
+    const values = Object.fromEntries(new FormData(form)) as Record<
+      string,
+      string
+    >;
+    const nextFilters = normalizeFilters({
+      brand: values.brand,
+      price: toOptionalNumber(values.price),
+      minMileage: toOptionalNumber(values.minMileage),
+      maxMileage: toOptionalNumber(values.maxMileage),
+    });
     setFilters(nextFilters);
     onSearch(nextFilters);
   };
@@ -77,8 +81,17 @@ const CarFilterForm = ({
   };
 
   return (
-    <form onSubmit={handleSubmit} noValidate className={css.filterForm}>
-      <label className={css.label}>
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      className={css.filterForm}
+      aria-label="Car filters"
+    >
+      <label
+        id={`${fieldId}-brand-label`}
+        className={css.label}
+        htmlFor={`${fieldId}-brand`}
+      >
         Car brand
         <select
           className={css.select}
@@ -86,8 +99,11 @@ const CarFilterForm = ({
           name="brand"
           value={filters.brand ?? ''}
           onChange={handleFilterChange}
+          aria-label="Car brand"
         >
-          <option value="">Choose a brand</option>
+          <option value="" disabled selected hidden>
+            Choose a brand
+          </option>
           {brandsList.map(brand => (
             <option key={brand} value={brand}>
               {brand}
@@ -96,16 +112,23 @@ const CarFilterForm = ({
         </select>
       </label>
 
-      <label className={css.label}>
+      <label
+        id={`${fieldId}-price-label`}
+        className={css.label}
+        htmlFor={`${fieldId}-price`}
+      >
         Price/ 1 hour
         <select
           className={css.select}
           id={`${fieldId}-price`}
           name="price"
-          value={filters.price ?? ''}
+          value={filters.price?.toString() ?? ''}
           onChange={handleFilterChange}
+          aria-label={`Car price ${priceRange.min} - ${priceRange.max}`}
         >
-          <option value="">Choose price</option>
+          <option value="" disabled selected hidden>
+            Choose a price
+          </option>
           {priceList.map(price => (
             <option key={price} value={price}>
               {price}
@@ -114,20 +137,28 @@ const CarFilterForm = ({
         </select>
       </label>
       <fieldset className={css.mileageContainer}>
-        <legend className={css.legend}>Сar mileage / km</legend>
+        <legend className={css.legend}>Car mileage / km</legend>
         <div className={css.mileageInputContainer}>
-          <label htmlFor={`${fieldId}-minMileage`}>From</label>
+          <label htmlFor={`${fieldId}-minMileage`} className="visually-hidden">
+            From
+          </label>
           <input
             className={css.input}
             id={`${fieldId}-minMileage`}
             type="number"
             name="minMileage"
             min="0"
+            inputMode="numeric"
+            aria-label="Minimum car mileage"
             value={filters.minMileage ?? ''}
             onChange={handleFilterChange}
+            placeholder="From"
           />
 
-          <label className={css.label} htmlFor={`${fieldId}-maxMileage`}>
+          <label
+            htmlFor={`${fieldId}-maxMileage`}
+            className="visually-hidden"
+          >
             To
           </label>
           <input
@@ -136,8 +167,11 @@ const CarFilterForm = ({
             type="number"
             name="maxMileage"
             min="0"
+            inputMode="numeric"
+            aria-label="Maximum car mileage"
             value={filters.maxMileage ?? ''}
             onChange={handleFilterChange}
+            placeholder="To"
           />
         </div>
       </fieldset>
