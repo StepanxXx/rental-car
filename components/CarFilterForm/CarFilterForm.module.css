@@ -13,7 +13,7 @@
   width: 100%;
   max-width: 924px;
   align-items: end;
-  justify-items:stretch;
+  justify-items: stretch;
 }
 
 .label,
@@ -210,7 +210,6 @@
     justify-self: center;
     align-self: center;
   }
-
 }
 
 @media only screen and (min-width: 1232px) {

@@ -120,7 +120,7 @@ const CarFilterForm = ({
             placeholder="Choose a price"
             list={priceList}
             value={filters.price?.toString() ?? ''}
-            displayValuePrefix ="To $"
+            displayValuePrefix="To $"
             onChange={handleFilterChange}
           />
         </span>

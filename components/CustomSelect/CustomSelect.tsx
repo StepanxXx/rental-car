@@ -11,7 +11,7 @@ interface CustomSelectProps {
   onChange: (event: SelectEvent) => void;
   className?: string;
   contentClassName?: string;
-  displayValuePrefix?: string; 
+  displayValuePrefix?: string;
 }
 export function CustomSelect({
   name,
