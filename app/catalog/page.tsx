@@ -8,11 +8,9 @@ import { Suspense } from 'react';
 import type { GetCarsParams } from '@/types/cars';
 import CatalogClient from './Catalog.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
-import { INITIAL_PAGE } from '@/lib/const';
-import { carsQuery, filterOptionsQuery } from '@/lib/queries';
+import { carsInfiniteQuery, filterOptionsQuery } from '@/lib/queries';
 
 const baseUrl = getBaseUrl();
-
 
 export async function generateMetadata({
   searchParams,
@@ -88,10 +86,10 @@ const Catalog = async ({ searchParams }: CatalogProps) => {
 
   await Promise.all([
     queryClient
-      .query(filterOptionsQuery())
+      .prefetchQuery(filterOptionsQuery())
       .catch(err => console.error('SSR filters prefetch error:', err)),
     queryClient
-      .query(carsQuery(filters, INITIAL_PAGE))
+      .prefetchInfiniteQuery(carsInfiniteQuery(filters))
       .catch(err => console.error('SSR cars prefetch error:', err)),
   ]);
   return (

@@ -10,8 +10,7 @@ import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import CarFilterForm from '@/components/CarFilterForm/CarFilterForm';
 import { useCarFilterStore } from '@/lib/store/filterStore';
 import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
-import { INITIAL_PAGE } from '@/lib/const';
-import { carsQuery, filterOptionsQuery } from '@/lib/queries';
+import { carsInfiniteQuery, filterOptionsQuery } from '@/lib/queries';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -52,20 +51,8 @@ const CatalogClient = () => {
     isError,
     isLoading,
   } = useInfiniteQuery({
-    ...carsQuery(currentFilters, INITIAL_PAGE),
+    ...carsInfiniteQuery(currentFilters),
     placeholderData: keepPreviousData,
-    initialPageParam: 0,
-    getNextPageParam: lastResponse => {
-      console.log('lastResponse', lastResponse);
-      const nextPage = lastResponse.page + 1;
-      return nextPage < lastResponse.totalPages ? nextPage : undefined;
-    },
-    select: data => {
-      return {
-        ...data,
-        cars: data.pages.flatMap(page => page.cars),
-      };
-    },
   });
 
   const {
@@ -97,7 +84,7 @@ const CatalogClient = () => {
     router.push(pathname);
   };
 
-  const cars: Car[] = data?.cars ?? [];
+  const cars: Car[] = data?.pages.flatMap(page => page.cars) ?? [];
 
   return (
     <div className="container">
