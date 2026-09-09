@@ -102,7 +102,7 @@ const CarFilterForm = ({
             onChange={handleFilterChange}
             aria-label="Car brand"
           >
-            <option value="" disabled selected hidden>
+            <option value="" disabled hidden>
               Choose a brand
             </option>
             {brandsList.map(brand => (
@@ -138,7 +138,7 @@ const CarFilterForm = ({
             onChange={handleFilterChange}
             aria-label={`Car price ${priceRange.min} - ${priceRange.max}`}
           >
-            <option value="" disabled selected hidden>
+            <option value="" disabled hidden>
               Choose a price
             </option>
             {priceList.map(price => (
