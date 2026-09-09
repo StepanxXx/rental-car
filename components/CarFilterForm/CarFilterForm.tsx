@@ -3,6 +3,7 @@
 import { useId } from 'react';
 import { useCarFilterStore } from '@/lib/store/filterStore';
 import type { CarFilters, CarsFiltersResponse } from '@/types/cars';
+import { CustomSelect } from '../CustomSelect/CustomSelect';
 
 import css from './CarFilterForm.module.css';
 
@@ -41,7 +42,9 @@ const CarFilterForm = ({
   const filters = useCarFilterStore(state => state.filters);
 
   const handleFilterChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+    event:
+      | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+      | { target: { name: string; value: string } }
   ) => {
     const { name, value } = event.target;
     const key = name as FilterKey;
@@ -54,18 +57,15 @@ const CarFilterForm = ({
 
   const handleSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
-    const form = event.currentTarget as HTMLFormElement;
 
-    const values = Object.fromEntries(new FormData(form)) as Record<
-      string,
-      string
-    >;
     const nextFilters = normalizeFilters({
-      brand: values.brand,
-      price: toOptionalNumber(values.price),
-      minMileage: toOptionalNumber(values.minMileage),
-      maxMileage: toOptionalNumber(values.maxMileage),
+      brand: filters.brand,
+      price: toOptionalNumber(String(filters.price)),
+      minMileage: toOptionalNumber(String(filters.minMileage)),
+      maxMileage: toOptionalNumber(String(filters.maxMileage)),
     });
+
+    console.log(nextFilters);
     setFilters(nextFilters);
     onSearch(nextFilters);
   };
@@ -94,32 +94,14 @@ const CarFilterForm = ({
       >
         Car brand
         <span className={css.selectWrapper}>
-          <select
-            className={css.select}
-            id={`${fieldId}-brand`}
+          <CustomSelect
             name="brand"
+            className={css.select}
+            placeholder="Choose a brand"
+            list={brandsList}
             value={filters.brand ?? ''}
             onChange={handleFilterChange}
-            aria-label="Car brand"
-          >
-            <option value="" disabled hidden>
-              Choose a brand
-            </option>
-            {brandsList.map(brand => (
-              <option key={brand} value={brand}>
-                {brand}
-              </option>
-            ))}
-          </select>
-          <svg
-            className={css.selectIcon}
-            width="13"
-            height="7"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <use href="/icons.svg#icon-chevron-up" />
-          </svg>
+          />
         </span>
       </label>
 
@@ -130,32 +112,14 @@ const CarFilterForm = ({
       >
         Price/ 1 hour
         <span className={css.selectWrapper}>
-          <select
-            className={css.select}
-            id={`${fieldId}-price`}
+          <CustomSelect
             name="price"
+            className={css.select}
+            placeholder="Choose a price"
+            list={priceList}
             value={filters.price?.toString() ?? ''}
             onChange={handleFilterChange}
-            aria-label={`Car price ${priceRange.min} - ${priceRange.max}`}
-          >
-            <option value="" disabled hidden>
-              Choose a price
-            </option>
-            {priceList.map(price => (
-              <option key={price} value={price}>
-                {price}
-              </option>
-            ))}
-          </select>
-          <svg
-            className={css.selectIcon}
-            width="13"
-            height="7"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <use href="/icons.svg#icon-chevron-up" />
-          </svg>
+          />
         </span>
       </label>
       <fieldset className={css.mileageContainer}>
