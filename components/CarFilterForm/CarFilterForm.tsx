@@ -122,6 +122,7 @@ const CarFilterForm = ({
             value={filters.price?.toString() ?? ''}
             displayValuePrefix="To $"
             onChange={handleFilterChange}
+            scrollbarSize={64}
           />
         </span>
       </label>

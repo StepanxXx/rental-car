@@ -14,6 +14,7 @@ interface CustomSelectProps {
   className?: string;
   contentClassName?: string;
   displayValuePrefix?: string;
+  scrollbarSize?: number;
 }
 export function CustomSelect({
   name,
@@ -24,6 +25,7 @@ export function CustomSelect({
   className,
   contentClassName,
   displayValuePrefix,
+  scrollbarSize = 128,
 }: CustomSelectProps) {
   return (
     <Select.Root
@@ -61,8 +63,8 @@ export function CustomSelect({
             <SimpleBar
               className={css.scrollArea}
               autoHide={false}
-              scrollbarMinSize={128}
-              scrollbarMaxSize={128}
+              scrollbarMinSize={scrollbarSize}
+              scrollbarMaxSize={scrollbarSize}
             >
               <div className={css.options}>
                 {list.map(item => (
