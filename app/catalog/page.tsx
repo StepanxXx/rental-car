@@ -5,11 +5,11 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import { Suspense } from 'react';
-import { getCars, getCarsFilters } from '@/lib/api';
 import type { GetCarsParams } from '@/types/cars';
 import CatalogClient from './Catalog.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
-import { INITIAL_PAGE, PER_PAGE } from '@/lib/const';
+import { INITIAL_PAGE } from '@/lib/const';
+import { carsQuery, filterOptionsQuery } from '@/lib/queries';
 
 const baseUrl = getBaseUrl();
 
@@ -78,22 +78,20 @@ interface CatalogProps {
 }
 const Catalog = async ({ searchParams }: CatalogProps) => {
   const queryClient = new QueryClient();
-  const filters = await searchParams;
+  const rawParams = await searchParams;
+  const filters = {
+    brand: rawParams.brand?.trim() ?? '',
+    price: rawParams.price ? Number(rawParams.price) : undefined,
+    minMileage: rawParams.minMileage ? Number(rawParams.minMileage) : undefined,
+    maxMileage: rawParams.maxMileage ? Number(rawParams.maxMileage) : undefined,
+  };
+
   await Promise.all([
     queryClient
-      .query({
-        queryKey: ['filtersOptions'],
-        queryFn: getCarsFilters,
-        staleTime: 1000 * 60 * 10,
-      })
+      .query(filterOptionsQuery())
       .catch(err => console.error('SSR filters prefetch error:', err)),
     queryClient
-      .query({
-        queryKey: ['cars', filters, INITIAL_PAGE],
-        queryFn: () =>
-          getCars({ ...filters, perPage: PER_PAGE, page: INITIAL_PAGE }),
-        staleTime: 1000 * 5,
-      })
+      .query(carsQuery(filters, INITIAL_PAGE))
       .catch(err => console.error('SSR cars prefetch error:', err)),
   ]);
   return (

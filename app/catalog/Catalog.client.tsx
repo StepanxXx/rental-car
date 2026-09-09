@@ -1,13 +1,17 @@
 'use client';
 
 import { useEffect } from 'react';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
+import {
+  keepPreviousData,
+  useQuery,
+  useInfiniteQuery,
+} from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import CarFilterForm from '@/components/CarFilterForm/CarFilterForm';
 import { useCarFilterStore } from '@/lib/store/filterStore';
-import { getCars, getCarsFilters } from '@/lib/api';
 import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
-import { PER_PAGE, INITIAL_PAGE } from '@/lib/const';
+import { INITIAL_PAGE } from '@/lib/const';
+import { carsQuery, filterOptionsQuery } from '@/lib/queries';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -35,16 +39,33 @@ const CatalogClient = () => {
     setFilters(parseFilters(searchParams));
   }, [searchParams, setFilters]);
 
-  const { data, isError, isLoading, isFetching } = useQuery({
-    queryKey: ['cars', currentFilters, INITIAL_PAGE],
-    queryFn: () =>
-      getCars({
-        ...currentFilters,
-        perPage: PER_PAGE,
-        page: INITIAL_PAGE,
-      }),
+  // const { data, isError, isLoading, isFetching } = useQuery({
+  //   ...carsQuery(currentFilters, INITIAL_PAGE),
+  //   placeholderData: keepPreviousData,
+  // });
+  const {
+    data,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    isError,
+    isLoading,
+  } = useInfiniteQuery({
+    ...carsQuery(currentFilters, INITIAL_PAGE),
     placeholderData: keepPreviousData,
-    staleTime: 1000 * 10,
+    initialPageParam: 0,
+    getNextPageParam: lastResponse => {
+      console.log('lastResponse', lastResponse);
+      const nextPage = lastResponse.page + 1;
+      return nextPage < lastResponse.totalPages ? nextPage : undefined;
+    },
+    select: data => {
+      return {
+        ...data,
+        cars: data.pages.flatMap(page => page.cars),
+      };
+    },
   });
 
   const {
@@ -52,10 +73,8 @@ const CatalogClient = () => {
     isLoading: isFilterLoading,
     isError: isFilterError,
   } = useQuery({
-    queryKey: ['filtersOptions'],
-    queryFn: getCarsFilters,
+    ...filterOptionsQuery(),
     refetchOnMount: false,
-    staleTime: 1000 * 60 * 10,
   });
 
   const handleSearch = (nextFilters: CarFilters) => {
@@ -93,7 +112,21 @@ const CatalogClient = () => {
       {(isLoading || isFilterLoading) && <p>Loading cars...</p>}
       {isFetching && !isLoading && <p>Updating cars...</p>}
       {(isError || isFilterError) && <p>Could not load cars.</p>}
-      {!isLoading && !isError && <pre>{JSON.stringify(cars, null, 2)}</pre>}
+      {!isLoading && !isError && (
+        <>
+          <pre>{JSON.stringify(cars, null, 2)}</pre>
+          <button
+            onClick={() => fetchNextPage()}
+            disabled={!hasNextPage || isFetching}
+          >
+            {isFetchingNextPage
+              ? 'Loading more...'
+              : hasNextPage
+                ? 'Load more'
+                : 'Nothing more to load'}
+          </button>
+        </>
+      )}
     </div>
   );
 };
