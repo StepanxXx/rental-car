@@ -1,7 +1,7 @@
 import * as Select from '@radix-ui/react-select';
-import css from "./CustomSelect.module.css";
+import css from './CustomSelect.module.css';
 
-type SelectEvent = { target: { name: string, value: string } };
+type SelectEvent = { target: { name: string; value: string } };
 
 interface CustomSelectProps {
   name: string;
@@ -10,13 +10,24 @@ interface CustomSelectProps {
   value: string;
   onChange: (event: SelectEvent) => void;
   className?: string;
+  contentClassName?: string;
 }
-export function CustomSelect({ name, placeholder, list, value, onChange, className }: CustomSelectProps) {
+export function CustomSelect({
+  name,
+  placeholder,
+  list,
+  value,
+  onChange,
+  className,
+  contentClassName,
+}: CustomSelectProps) {
   return (
     <Select.Root
-      value={ value}
-      onValueChange={ value => onChange({target: {name, value: String(value)}}) }
-      defaultValue={ placeholder }
+      value={value}
+      onValueChange={value =>
+        onChange({ target: { name, value: String(value) } })
+      }
+      defaultValue={placeholder}
     >
       <Select.Trigger className={`${css.trigger} ${className ?? ''}`}>
         <Select.Value placeholder={placeholder} />
@@ -36,7 +47,7 @@ export function CustomSelect({ name, placeholder, list, value, onChange, classNa
 
       <Select.Portal>
         <Select.Content
-          className={css.content}
+          className={`${css.content} ${contentClassName ?? ''}`}
           position="popper"
           sideOffset={4}
         >

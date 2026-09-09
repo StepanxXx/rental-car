@@ -97,6 +97,7 @@ const CarFilterForm = ({
           <CustomSelect
             name="brand"
             className={css.select}
+            contentClassName={css.selectContentBrand}
             placeholder="Choose a brand"
             list={brandsList}
             value={filters.brand ?? ''}
@@ -115,6 +116,7 @@ const CarFilterForm = ({
           <CustomSelect
             name="price"
             className={css.select}
+            contentClassName={css.selectContentPrice}
             placeholder="Choose a price"
             list={priceList}
             value={filters.price?.toString() ?? ''}

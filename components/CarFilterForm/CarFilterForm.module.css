@@ -1,15 +1,19 @@
 .filterForm {
   display: grid;
-  grid-template-columns: 204px 196px 320px 156px;
+  grid-template-columns: 1fr;
   grid-template-areas:
-    'brand price mileage submit'
-    '. . . clear';
+    'brand'
+    'price'
+    'mileage'
+    'submit'
+    'clear';
+  margin: 32px auto 40px;
   column-gap: 16px;
   row-gap: 4px;
   width: 100%;
   max-width: 924px;
-  margin: 84px auto 60px;
   align-items: end;
+  justify-items:stretch;
 }
 
 .label,
@@ -137,11 +141,12 @@
   border: 0;
   font: inherit;
   cursor: pointer;
+  margin-top: 16px;
 }
 
 .submitBtn {
   grid-area: submit;
-  width: 156px;
+  width: 100%;
   height: 44px;
   padding: 12px 24px;
   border-radius: 12px;
@@ -181,7 +186,7 @@
   color: var(--main);
 }
 
-@media only screen and (max-width: 1023px) {
+@media only screen and (min-width: 768px) {
   .filterForm {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-areas:
@@ -192,6 +197,11 @@
     margin-top: 48px;
   }
 
+  .submitBtn,
+  .clearBtn {
+    margin-top: 0;
+  }
+
   .submitBtn {
     width: 100%;
   }
@@ -200,17 +210,59 @@
     justify-self: center;
     align-self: center;
   }
+
 }
 
-@media only screen and (max-width: 479px) {
+@media only screen and (min-width: 1232px) {
   .filterForm {
-    grid-template-columns: 1fr;
+    grid-template-columns: 204px 196px 320px 156px;
     grid-template-areas:
-      'brand'
-      'price'
-      'mileage'
-      'submit'
-      'clear';
-    margin: 32px auto 40px;
+      'brand price mileage submit'
+      '. . . clear';
+    margin: 84px auto 60px;
+  }
+  .submitBtn {
+    width: 156px;
+  }
+
+  .clearBtn {
+    justify-self: center;
+    align-self: center;
+  }
+}
+
+.selectContentBrand,
+.selectContentPrice {
+  width: 304px;
+}
+
+@media only screen and (min-width: 320px) {
+  .selectContentBrand,
+  .selectContentPrice {
+    width: calc(100vw - 32px);
+  }
+}
+
+@media only screen and (min-width: 375px) {
+  .selectContentBrand,
+  .selectContentPrice {
+    width: 359px;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  .selectContentBrand,
+  .selectContentPrice {
+    width: 344px;
+  }
+}
+
+@media only screen and (min-width: 1232px) {
+  .selectContentBrand {
+    width: 204px;
+  }
+
+  .selectContentPrice {
+    width: 196px;
   }
 }
