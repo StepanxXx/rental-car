@@ -1,4 +1,6 @@
 import * as Select from '@radix-ui/react-select';
+import SimpleBar from 'simplebar-react';
+import 'simplebar-react/dist/simplebar.min.css';
 import css from './CustomSelect.module.css';
 
 type SelectEvent = { target: { name: string; value: string } };
@@ -56,15 +58,24 @@ export function CustomSelect({
           sideOffset={4}
         >
           <Select.Viewport className={css.viewport}>
-            {list.map(item => (
-              <Select.Item
-                key={item}
-                value={item.toString()}
-                className={css.item}
-              >
-                <Select.ItemText>{item}</Select.ItemText>
-              </Select.Item>
-            ))}
+            <SimpleBar
+              className={css.scrollArea}
+              autoHide={false}
+              scrollbarMinSize={128}
+              scrollbarMaxSize={128}
+            >
+              <div className={css.options}>
+                {list.map(item => (
+                  <Select.Item
+                    key={item}
+                    value={item.toString()}
+                    className={css.item}
+                  >
+                    <Select.ItemText>{item}</Select.ItemText>
+                  </Select.Item>
+                ))}
+              </div>
+            </SimpleBar>
           </Select.Viewport>
         </Select.Content>
       </Select.Portal>

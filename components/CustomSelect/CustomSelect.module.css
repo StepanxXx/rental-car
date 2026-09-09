@@ -26,6 +26,7 @@
 .content {
   display: flex;
   flex-direction: column;
+  overflow: hidden;
   border: 1px solid #fff;
   border-radius: 12px;
   width: 204px;
@@ -37,27 +38,37 @@
 
 .viewport {
   min-height: 0;
+  max-height: 242px;
+  overflow: hidden;
+}
+
+.scrollArea {
+  overflow-y: auto;
+  max-height: 242px;
+}
+
+.options {
   display: flex;
   flex-direction: column;
   gap: 8px;
-  overflow-y: scroll;
-  scrollbar-width: thin !important;
-  scrollbar-color: var(--gray-light) transparent;
-  scrollbar-gutter: stable;
+  padding-right: 16px;
 }
 
-.viewport::-webkit-scrollbar {
-  display: block;
+.scrollArea :global(.simplebar-track.simplebar-vertical) {
   width: 8px;
-}
-
-.viewport::-webkit-scrollbar-track {
   background: transparent;
 }
 
-.viewport::-webkit-scrollbar-thumb {
-  border-radius: 8px;
-  background-color: var(--gray-light);
+.scrollArea :global(.simplebar-scrollbar::before) {
+  inset: 0;
+  width: 8px;
+  border-radius: 10px;
+  background: var(--gray-light);
+  opacity: 1;
+}
+
+.scrollArea :global(.simplebar-scrollbar.simplebar-visible::before) {
+  opacity: 1;
 }
 
 .item {
