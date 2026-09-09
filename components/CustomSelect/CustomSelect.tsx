@@ -11,6 +11,7 @@ interface CustomSelectProps {
   onChange: (event: SelectEvent) => void;
   className?: string;
   contentClassName?: string;
+  displayValuePrefix?: string; 
 }
 export function CustomSelect({
   name,
@@ -20,6 +21,7 @@ export function CustomSelect({
   onChange,
   className,
   contentClassName,
+  displayValuePrefix,
 }: CustomSelectProps) {
   return (
     <Select.Root
@@ -30,7 +32,9 @@ export function CustomSelect({
       defaultValue={placeholder}
     >
       <Select.Trigger className={`${css.trigger} ${className ?? ''}`}>
-        <Select.Value placeholder={placeholder} />
+        <Select.Value placeholder={placeholder}>
+          {displayValuePrefix && value && `${displayValuePrefix}${value}`}
+        </Select.Value>
 
         <Select.Icon className={css.icon}>
           <svg
