@@ -30,11 +30,15 @@ export default function CarCard({ car }: CarCardProps) {
         <span className={css.price}>${car.rentalPrice}</span>
       </h3>
       <ul className={css.baseInfo} aria-label="Car details">
-        <li>{car.location.city}</li>
-        <li>{car.location.country}</li>
-        <li>{car.rentalCompany}</li>
-        <li>{car.type}</li>
-        <li>{mileage} km</li>
+        <div className={css.row}>
+          <li title={car.location.city}>{car.location.city}</li>
+          <li title={car.location.country}>{car.location.country}</li>
+          <li title={car.rentalCompany}>{car.rentalCompany}</li>
+        </div>
+        <div className={css.row}>
+          <li title={car.type}>{car.type}</li>
+          <li title={`${mileage} km`}>{mileage} km</li>
+        </div>
       </ul>
       <Link
         className={css.readMore}
