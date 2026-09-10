@@ -8,12 +8,14 @@ interface CarCardProps {
 }
 
 export default function CarCard({ car }: CarCardProps) {
+  const mileage = new Intl.NumberFormat('uk-UA').format(car.mileage);
+
   return (
-    <div className={css.card}>
+    <article className={css.card}>
       <Image
         className={css.image}
         src={car.img}
-        alt={`${car.model} - ${car.brand} - ${car.year}`}
+        alt={`${car.brand} ${car.model}, ${car.year}`}
         width={244}
         height={268}
         loading="lazy"
@@ -22,24 +24,25 @@ export default function CarCard({ car }: CarCardProps) {
         blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOsa2yqBwAFCAICLICSyQAAAABJRU5ErkJggg=="
       />
       <h3 className={css.title}>
-        <span>
-          {car.brand} <span className={css.model}>{car.model}</span>,{' '}
-          {car.year}
+        <span className={css.carName}>
+          {car.brand} <span className={css.model}>{car.model}</span>, {car.year}
         </span>
         <span className={css.price}>${car.rentalPrice}</span>
       </h3>
-      <div className={css.baseInfo}>
-        {car.location.city}
-        {' | '}
-        {car.location.country}
-        {' | '}
-        {car.rentalCompany}
-        {' | '}
-        {car.type}
-        {' | '}
-        {car.mileage} km
-      </div>
-      <Link href={`/cars/${car.id}`}>Read more</Link>
-    </div>
+      <ul className={css.baseInfo} aria-label="Car details">
+        <li>{car.location.city}</li>
+        <li>{car.location.country}</li>
+        <li>{car.rentalCompany}</li>
+        <li>{car.type}</li>
+        <li>{mileage} km</li>
+      </ul>
+      <Link
+        className={css.readMore}
+        href={`/cars/${car.id}`}
+        aria-label={`Read more about ${car.brand} ${car.model}`}
+      >
+        Read&nbsp;more
+      </Link>
+    </article>
   );
 }

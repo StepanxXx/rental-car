@@ -1,0 +1,57 @@
+.catalogSection {
+  padding-bottom: 64px;
+}
+
+.status {
+  padding: 48px 0;
+  color: var(--gray);
+  text-align: center;
+}
+
+.loadMore {
+  display: block;
+  min-width: 156px;
+  min-height: 44px;
+  margin: 48px auto 0;
+  border: 1px solid var(--light-blue);
+  border-radius: 12px;
+  padding: 11px 24px;
+  color: var(--main);
+  background-color: transparent;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  transition:
+    color var(--transition-time),
+    border-color var(--transition-time),
+    background-color var(--transition-time);
+}
+
+.loadMore:hover,
+.loadMore:focus-visible {
+  border-color: var(--dark-blue);
+  color: var(--white);
+  background-color: var(--dark-blue);
+}
+
+.loadMore:focus-visible {
+  outline: 2px solid var(--button-hover);
+  outline-offset: 2px;
+}
+
+.loadMore:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+@media only screen and (min-width: 768px) {
+  .catalogSection {
+    padding-bottom: 80px;
+  }
+}
+
+@media only screen and (min-width: 1232px) {
+  .catalogSection {
+    padding-bottom: 124px;
+  }
+}

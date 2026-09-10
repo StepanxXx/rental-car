@@ -8,6 +8,7 @@ import CarsList from '@/components/CarsList/CarsList';
 import { useCarFilterStore } from '@/lib/store/filterStore';
 import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
 import { carsInfiniteQuery } from '@/lib/queries';
+import css from './Catalog.module.css';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -89,26 +90,29 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
         </div>
       </section>
 
-      <section>
+      <section className={css.catalogSection}>
         <div className="container">
           <h2 className="visually-hidden">Cars list</h2>
-          {isLoading && <p>Loading cars...</p>}
-          {isFetching && !isLoading && <p>Updating cars...</p>}
-          {isError && <p>Could not load cars.</p>}
+          {isLoading && <p className={css.status}>Loading cars...</p>}
+          {isFetching && !isLoading && (
+            <p className={css.status} aria-live="polite">
+              Updating cars...
+            </p>
+          )}
+          {isError && <p className={css.status}>Could not load cars.</p>}
           {!isLoading && !isError && (
             <>
               <CarsList cars={cars} />
-              <button
-                type="button"
-                onClick={() => fetchNextPage()}
-                disabled={!hasNextPage || isFetching}
-              >
-                {isFetchingNextPage
-                  ? 'Loading more...'
-                  : hasNextPage
-                    ? 'Load more'
-                    : 'Nothing more to load'}
-              </button>
+              {hasNextPage && (
+                <button
+                  className={css.loadMore}
+                  type="button"
+                  onClick={() => fetchNextPage()}
+                  disabled={isFetchingNextPage}
+                >
+                  {isFetchingNextPage ? 'Loading more...' : 'Load more'}
+                </button>
+              )}
             </>
           )}
         </div>

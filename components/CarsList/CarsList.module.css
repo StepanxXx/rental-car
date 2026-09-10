@@ -1,9 +1,16 @@
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr));
-  gap: 22px;
+  grid-template-columns: repeat(auto-fill, 276px);
+  justify-content: center;
+  gap: 48px 21px;
   align-items: start;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+@media only screen and (min-width: 1232px) {
+  .list {
+    justify-content: space-between;
+  }
 }
