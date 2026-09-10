@@ -18,10 +18,9 @@ export default function CarCard({ car }: CarCardProps) {
         alt={`${car.brand} ${car.model}, ${car.year}`}
         width={244}
         height={268}
-        loading="lazy"
-        placeholder="blur"
+        loading="eager"
+        priority={true}
         decoding="async"
-        blurDataURL="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mOsa2yqBwAFCAICLICSyQAAAABJRU5ErkJggg=="
       />
       <h3 className={css.title}>
         <span className={css.carName}>
@@ -52,7 +51,8 @@ export default function CarCard({ car }: CarCardProps) {
       </div>
       <Link
         className={css.readMore}
-        href={`/cars/${car.id}`}
+        // href={`/cars/${car.id}`}
+        href={`/catalog`}
         aria-label={`Read more about ${car.brand} ${car.model}`}
       >
         Read&nbsp;more

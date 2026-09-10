@@ -86,14 +86,14 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
     <main>
       <h1 className="visually-hidden">Cars catalog</h1>
       <section>
-        <div className="container">
+        <div className={`container ${css.catalogContainer}`}>
           <h2 className="visually-hidden">Find your perfect rental&nbsp;car</h2>
           <CarFilterForm onSearch={handleSearch} onClear={handleClear} />
         </div>
       </section>
       <section className={css.catalogSection}>
-        <div className="container">
-          {isError || cars.length === 0 ? (
+        <div className={`container ${css.catalogContainer}`}>
+          {(isError || cars.length === 0) && !isLoading ? (
             <CarsNotFoundCard />
           ) : (
             <>
