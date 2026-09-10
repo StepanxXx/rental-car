@@ -10,10 +10,6 @@
   outline-color: var(--light-blue);
 }
 
-.icon {
-  margin-left: auto;
-}
-
 .selectIcon {
   transform: translateY(-50%) rotate(180deg);
   transform-origin: center;
@@ -79,7 +75,7 @@
   cursor: pointer;
 }
 
-.item[aria-selected='true'][data-state='checked'],
+.item[data-state='checked'],
 .item:hover,
 .item:focus-visible {
   color: var(--main) !important;
