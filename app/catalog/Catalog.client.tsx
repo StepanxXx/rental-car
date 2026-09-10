@@ -10,6 +10,7 @@ import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
 import { carsInfiniteQuery } from '@/lib/queries';
 import css from './Catalog.module.css';
 import CarsLoader from '@/components/CarsLoader/CarsLoader';
+import CarsNotFoundCard from '@/components/CarsNotFoundCard/CarsNotFoundCard';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -82,7 +83,7 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
   const cars: Car[] = data?.pages.flatMap(page => page.cars) ?? [];
 
   return (
-    <>
+    <main>
       <h1 className="visually-hidden">Cars catalog</h1>
       <section>
         <div className="container">
@@ -90,34 +91,38 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
           <CarFilterForm onSearch={handleSearch} onClear={handleClear} />
         </div>
       </section>
-
       <section className={css.catalogSection}>
         <div className="container">
-          <h2 className="visually-hidden">Cars list</h2>
-          {isError && <p className={css.status}>Could not load cars.</p>}
-          {!isLoading && !isError && (
+          {isError || cars.length === 0 ? (
+            <CarsNotFoundCard />
+          ) : (
             <>
-              <div className={css.carsListWrapper}>
-                <CarsList cars={cars} />
-                <CarsLoader
-                  isActive={isLoading || isFetching || isFetchingNextPage}
-                />
-              </div>
-              {hasNextPage && (
-                <button
-                  className={css.loadMore}
-                  type="button"
-                  onClick={() => fetchNextPage()}
-                  disabled={isFetchingNextPage}
-                >
-                  Load&nbsp;more
-                </button>
+              <h2 className="visually-hidden">Cars list</h2>
+              {!isLoading && !isError && (
+                <>
+                  <div className={css.carsListWrapper}>
+                    <CarsList cars={cars} />
+                    <CarsLoader
+                      isActive={isLoading || isFetching || isFetchingNextPage}
+                    />
+                  </div>
+                  {hasNextPage && (
+                    <button
+                      className={css.loadMore}
+                      type="button"
+                      onClick={() => fetchNextPage()}
+                      disabled={isFetchingNextPage}
+                    >
+                      Load&nbsp;more
+                    </button>
+                  )}
+                </>
               )}
             </>
           )}
         </div>
       </section>
-    </>
+    </main>
   );
 };
 
