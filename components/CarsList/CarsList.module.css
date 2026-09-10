@@ -1,16 +1,24 @@
 .list {
   display: grid;
-  grid-template-columns: repeat(auto-fill, 276px);
+  grid-template-columns: 1fr;
   justify-content: center;
-  gap: 48px 21px;
+  gap: 48px 32px;
   align-items: start;
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
+@media only screen and (min-width: 768px) {
+  .list {
+    justify-content: space-between;
+    grid-template-columns: repeat(2, 352px);
+  }
+}
+
 @media only screen and (min-width: 1232px) {
   .list {
     justify-content: space-between;
+    grid-template-columns: repeat(4, 276px);
   }
 }
