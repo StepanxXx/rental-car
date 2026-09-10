@@ -100,7 +100,7 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
               <div className={css.carsListWrapper}>
                 <CarsList cars={cars} />
                 <Loader
-                  isActive={isLoading || isFetching  || isFetchingNextPage}
+                  isActive={isLoading || isFetching || isFetchingNextPage}
                 />
               </div>
               {hasNextPage && (
@@ -110,7 +110,7 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
                   onClick={() => fetchNextPage()}
                   disabled={isFetchingNextPage}
                 >
-                  {isFetchingNextPage ? 'Loading more...' : 'Load more'}
+                  Load&nbsp;more
                 </button>
               )}
             </>

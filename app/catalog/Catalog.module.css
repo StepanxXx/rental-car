@@ -1,6 +1,4 @@
-.catalogSection {
-  padding-bottom: 64px;
-}
+
 
 .carsListWrapper {
   position: relative;
@@ -8,28 +6,16 @@
 
 .loadMore {
   display: block;
-  min-width: 156px;
-  min-height: 44px;
-  margin: 48px auto 0;
-  border: 1px solid var(--light-blue);
+  margin: 48px auto 104px;
+  border: 1px solid #00aad4;
   border-radius: 12px;
-  padding: 11px 24px;
-  color: var(--main);
-  background-color: transparent;
-  font-weight: 500;
-  font-size: 16px;
-  line-height: 1.25;
-  transition:
-    color var(--transition-time),
-    border-color var(--transition-time),
-    background-color var(--transition-time);
+  padding: 12px 51px;
+  transition: background-color var(--transition-time);
 }
 
 .loadMore:hover,
 .loadMore:focus-visible {
-  border-color: var(--dark-blue);
-  color: var(--white);
-  background-color: var(--dark-blue);
+  border-color: #0095ba;
 }
 
 .loadMore:focus-visible {
@@ -40,16 +26,4 @@
 .loadMore:disabled {
   cursor: wait;
   opacity: 0.65;
-}
-
-@media only screen and (min-width: 768px) {
-  .catalogSection {
-    padding-bottom: 80px;
-  }
-}
-
-@media only screen and (min-width: 1232px) {
-  .catalogSection {
-    padding-bottom: 124px;
-  }
 }

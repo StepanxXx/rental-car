@@ -16,10 +16,18 @@
   pointer-events: none;
 
   border-radius: 16px;
-  padding: 48px 96px;
+  padding: 48px;
   width: 543px;
   height: 288px;
   background: var(--white);
+}
+
+@media only screen and (min-width: 768px) {
+  .loader {
+    padding: 48px 96px;
+    width: 543px;
+    height: 288px;
+  }
 }
 
 .spinnerWrapper {
