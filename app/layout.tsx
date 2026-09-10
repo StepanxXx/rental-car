@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { Manrope, Inter } from 'next/font/google';
+import { Manrope } from 'next/font/google';
 import 'modern-normalize';
 import './reset.css';
 import './globals.css';
@@ -14,11 +14,6 @@ const manrope = Manrope({
   display: 'swap',
 });
 
-const inter = Inter({
-  subsets: ['latin'],
-  variable: '--second-family',
-  display: 'swap',
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(baseUrl),
@@ -54,7 +49,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
-      <body className={`${manrope.variable} ${inter.variable}`}>
+      <body className={manrope.variable}>
         <TanStackProvider>
           <Header />
           {children}

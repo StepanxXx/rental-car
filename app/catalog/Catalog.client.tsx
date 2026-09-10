@@ -9,6 +9,7 @@ import { useCarFilterStore } from '@/lib/store/filterStore';
 import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
 import { carsInfiniteQuery } from '@/lib/queries';
 import css from './Catalog.module.css';
+import Loader from '@/components/Loader/Loader';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -93,16 +94,15 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
       <section className={css.catalogSection}>
         <div className="container">
           <h2 className="visually-hidden">Cars list</h2>
-          {isLoading && <p className={css.status}>Loading cars...</p>}
-          {isFetching && !isLoading && (
-            <p className={css.status} aria-live="polite">
-              Updating cars...
-            </p>
-          )}
           {isError && <p className={css.status}>Could not load cars.</p>}
           {!isLoading && !isError && (
             <>
-              <CarsList cars={cars} />
+              <div className={css.carsListWrapper}>
+                <CarsList cars={cars} />
+                <Loader
+                  isActive={isLoading || isFetching  || isFetchingNextPage}
+                />
+              </div>
               {hasNextPage && (
                 <button
                   className={css.loadMore}

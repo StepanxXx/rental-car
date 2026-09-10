@@ -2,10 +2,8 @@
   padding-bottom: 64px;
 }
 
-.status {
-  padding: 48px 0;
-  color: var(--gray);
-  text-align: center;
+.carsListWrapper {
+  position: relative;
 }
 
 .loadMore {

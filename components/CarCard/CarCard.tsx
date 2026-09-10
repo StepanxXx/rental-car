@@ -29,17 +29,27 @@ export default function CarCard({ car }: CarCardProps) {
         </span>
         <span className={css.price}>${car.rentalPrice}</span>
       </h3>
-      <ul className={css.baseInfo} aria-label="Car details">
-        <div className={css.row}>
-          <li title={car.location.city}>{car.location.city}</li>
-          <li title={car.location.country}>{car.location.country}</li>
-          <li title={car.rentalCompany}>{car.rentalCompany}</li>
-        </div>
-        <div className={css.row}>
-          <li title={car.type}>{car.type}</li>
-          <li title={`${mileage} km`}>{mileage} km</li>
-        </div>
-      </ul>
+      <div className={css.baseInfo} aria-label="Car details">
+        <ul className={css.row}>
+          <li tabIndex={0} data-tooltip={car.location.city}>
+            <span className={css.metaText}>{car.location.city}</span>
+          </li>
+          <li tabIndex={0} data-tooltip={car.location.country}>
+            <span className={css.metaText}>{car.location.country}</span>
+          </li>
+          <li tabIndex={0} data-tooltip={car.rentalCompany}>
+            <span className={css.metaText}>{car.rentalCompany}</span>
+          </li>
+        </ul>
+        <ul className={css.row}>
+          <li tabIndex={0} data-tooltip={car.type}>
+            <span className={css.metaText}>{car.type}</span>
+          </li>
+          <li tabIndex={0} data-tooltip={`${mileage} km`}>
+            <span className={css.metaText}>{mileage} km</span>
+          </li>
+        </ul>
+      </div>
       <Link
         className={css.readMore}
         href={`/cars/${car.id}`}

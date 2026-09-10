@@ -14,6 +14,8 @@
 }
 
 .card:hover {
+  position: relative;
+  z-index: 2;
   transform: scale(1.02);
   box-shadow: 0 12px 28px rgb(16 24 40 / 8%);
 }
@@ -84,10 +86,22 @@
 
 .row li {
   position: relative;
+  min-width: 0;
   padding: 0 5.5px;
+}
+
+.metaText {
+  display: block;
+  max-width: 100%;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+.row li:focus-visible {
+  border-radius: 2px;
+  outline: 2px solid var(--light-blue);
+  outline-offset: 1px;
 }
 
 .row li:first-child {
