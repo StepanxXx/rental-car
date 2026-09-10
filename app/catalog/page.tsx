@@ -1,16 +1,26 @@
 import { Metadata } from 'next';
+import { notFound } from 'next/navigation';
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
 import { Suspense } from 'react';
+import { getCarsFilters } from '@/lib/api';
 import type { GetCarsParams } from '@/types/cars';
 import CatalogClient from './Catalog.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
-import { carsInfiniteQuery, filterOptionsQuery } from '@/lib/queries';
+import { carsInfiniteQuery } from '@/lib/queries';
 
 const baseUrl = getBaseUrl();
+
+/*
+// TODO: виконання запиту з кешуванням на день. Спробувати різні варіанти реалізації цього
+*/
+const filtersOptions = await getCarsFilters().catch(() => ({
+  brands: [] as string[],
+  price: { min: 0, max: 0 },
+}));
 
 export async function generateMetadata({
   searchParams,
@@ -18,6 +28,13 @@ export async function generateMetadata({
   searchParams: Promise<GetCarsParams>;
 }): Promise<Metadata> {
   const { brand, price, minMileage, maxMileage } = await searchParams;
+  const { brands, price: priceRange } = filtersOptions;
+  if (brand && !brands.includes(brand)) {
+    notFound();
+  }
+  if (price && (price < priceRange.min || price > priceRange.max)) {
+    notFound();
+  }
   const title =
     brand || price || minMileage || maxMileage
       ? 'RentalCars catalog filtered by: ' +
@@ -84,18 +101,14 @@ const Catalog = async ({ searchParams }: CatalogProps) => {
     maxMileage: rawParams.maxMileage ? Number(rawParams.maxMileage) : undefined,
   };
 
-  await Promise.all([
-    queryClient
-      .query(filterOptionsQuery())
-      .catch(err => console.error('SSR filters prefetch error:', err)),
-    queryClient
-      .infiniteQuery(carsInfiniteQuery(filters))
-      .catch(err => console.error('SSR cars prefetch error:', err)),
-  ]);
+  queryClient
+    .infiniteQuery(carsInfiniteQuery(filters))
+    .catch(err => console.error('SSR cars prefetch error:', err));
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<div className="container">Loading catalog...</div>}>
-        <CatalogClient />
+        <CatalogClient filtersOptions={filtersOptions} />
       </Suspense>
     </HydrationBoundary>
   );

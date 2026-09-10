@@ -1,16 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import {
-  keepPreviousData,
-  useQuery,
-  useInfiniteQuery,
-} from '@tanstack/react-query';
+import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import CarFilterForm from '@/components/CarFilterForm/CarFilterForm';
 import { useCarFilterStore } from '@/lib/store/filterStore';
 import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
-import { carsInfiniteQuery, filterOptionsQuery } from '@/lib/queries';
+import { carsInfiniteQuery } from '@/lib/queries';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -26,11 +22,20 @@ const parseFilters = (searchParams: URLSearchParams): CarFilters => ({
   maxMileage: parseNumber(searchParams.get('maxMileage')),
 });
 
-const CatalogClient = () => {
+interface CatalogClientProps {
+  filtersOptions: CarsFiltersResponse;
+}
+
+const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
   const setFilters = useCarFilterStore(state => state.setFilters);
+  const setFiltersOptions = useCarFilterStore(state => state.setFiltersOptions);
+
+  useEffect(() => {
+    setFiltersOptions(filtersOptions);
+  });
 
   const currentFilters = parseFilters(searchParams);
 
@@ -38,10 +43,6 @@ const CatalogClient = () => {
     setFilters(parseFilters(searchParams));
   }, [searchParams, setFilters]);
 
-  // const { data, isError, isLoading, isFetching } = useQuery({
-  //   ...carsQuery(currentFilters, INITIAL_PAGE),
-  //   placeholderData: keepPreviousData,
-  // });
   const {
     data,
     fetchNextPage,
@@ -53,15 +54,6 @@ const CatalogClient = () => {
   } = useInfiniteQuery({
     ...carsInfiniteQuery(currentFilters),
     placeholderData: keepPreviousData,
-  });
-
-  const {
-    data: filtersOptions,
-    isLoading: isFilterLoading,
-    isError: isFilterError,
-  } = useQuery({
-    ...filterOptionsQuery(),
-    refetchOnMount: false,
   });
 
   const handleSearch = (nextFilters: CarFilters) => {
@@ -88,17 +80,11 @@ const CatalogClient = () => {
 
   return (
     <div className="container">
-      {!isFilterLoading && !isFilterError && (
-        <CarFilterForm
-          onSearch={handleSearch}
-          onClear={handleClear}
-          filtersOptions={filtersOptions as CarsFiltersResponse}
-        />
-      )}
+      <CarFilterForm onSearch={handleSearch} onClear={handleClear} />
 
-      {(isLoading || isFilterLoading) && <p>Loading cars...</p>}
+      {isLoading && <p>Loading cars...</p>}
       {isFetching && !isLoading && <p>Updating cars...</p>}
-      {(isError || isFilterError) && <p>Could not load cars.</p>}
+      {isError && <p>Could not load cars.</p>}
       {!isLoading && !isError && (
         <>
           <pre>{JSON.stringify(cars, null, 2)}</pre>

@@ -2,7 +2,7 @@
 
 import { useId } from 'react';
 import { useCarFilterStore } from '@/lib/store/filterStore';
-import type { CarFilters, CarsFiltersResponse } from '@/types/cars';
+import type { CarFilters } from '@/types/cars';
 import { CustomSelect } from '../CustomSelect/CustomSelect';
 
 import css from './CarFilterForm.module.css';
@@ -16,23 +16,20 @@ const toOptionalNumber = (value: string) => {
   return Number.isFinite(parsedValue) ? parsedValue : undefined;
 };
 
-const normalizeFilters = (filters: CarFilters): CarFilters => ({
-  ...filters,
-  brand: filters.brand?.trim() ?? '',
-});
-
 interface CarFilterFormProps {
   onSearch: (filters: CarFilters) => void;
   onClear: () => void;
-  filtersOptions: CarsFiltersResponse;
 }
 
 const CarFilterForm = ({
   onSearch,
-  onClear,
-  filtersOptions: { brands: brandsList, price: priceRange },
+  onClear
 }: CarFilterFormProps) => {
   const fieldId = useId();
+
+  const { brands: brandsList, price: priceRange } = useCarFilterStore(
+    state => state.filtersOptions
+  );
 
   const priceList = [...Array(priceRange.max - priceRange.min + 1)]
     .map((_, index) => index + priceRange.min)
@@ -40,6 +37,7 @@ const CarFilterForm = ({
 
   const setFilters = useCarFilterStore(state => state.setFilters);
   const filters = useCarFilterStore(state => state.filters);
+
 
   const handleFilterChange = (
     event:
@@ -58,14 +56,13 @@ const CarFilterForm = ({
   const handleSubmit = async (event: React.SubmitEvent) => {
     event.preventDefault();
 
-    const nextFilters = normalizeFilters({
-      brand: filters.brand,
+    const nextFilters = {
+      brand: filters.brand?.trim() ?? '',
       price: toOptionalNumber(String(filters.price)),
       minMileage: toOptionalNumber(String(filters.minMileage)),
       maxMileage: toOptionalNumber(String(filters.maxMileage)),
-    });
+    };
 
-    console.log(nextFilters);
     setFilters(nextFilters);
     onSearch(nextFilters);
   };
