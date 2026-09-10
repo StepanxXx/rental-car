@@ -1,10 +1,10 @@
-import css from './Loader.module.css';
+import css from './CarsLoader.module.css';
 
 type LoaderProps = {
   isActive: boolean;
 };
 
-export default function Loader({ isActive = true }: LoaderProps) {
+export default function CarsLoader({ isActive = true }: LoaderProps) {
   return (
     <div className={isActive ? css.backdrop : 'visually-hidden'}>
       <div className={css.loader}>

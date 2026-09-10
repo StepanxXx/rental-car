@@ -9,7 +9,7 @@ import { useCarFilterStore } from '@/lib/store/filterStore';
 import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
 import { carsInfiniteQuery } from '@/lib/queries';
 import css from './Catalog.module.css';
-import Loader from '@/components/Loader/Loader';
+import CarsLoader from '@/components/CarsLoader/CarsLoader';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -99,7 +99,7 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
             <>
               <div className={css.carsListWrapper}>
                 <CarsList cars={cars} />
-                <Loader
+                <CarsLoader
                   isActive={isLoading || isFetching || isFetchingNextPage}
                 />
               </div>
