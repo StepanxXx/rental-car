@@ -1,12 +1,12 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
+import { unstable_cache } from 'next/cache';
+import { cache, Suspense } from 'react';
 import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { cache, Suspense } from 'react';
-import { unstable_cache } from 'next/cache';
 import { getCarsFilters } from '@/lib/api';
 import type { CarsFiltersResponse, GetCarsParams } from '@/types/cars';
 import CatalogClient from './Catalog.client';
