@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import CarFilterForm from '@/components/CarFilterForm/CarFilterForm';
+import CarsList from '@/components/CarsList/CarsList';
 import { useCarFilterStore } from '@/lib/store/filterStore';
 import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
 import { carsInfiniteQuery } from '@/lib/queries';
@@ -79,28 +80,40 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
   const cars: Car[] = data?.pages.flatMap(page => page.cars) ?? [];
 
   return (
-    <div className="container">
-      <CarFilterForm onSearch={handleSearch} onClear={handleClear} />
+    <>
+      <h1 className="visually-hidden">Cars catalog</h1>
+      <section>
+        <div className="container">
+          <h2 className="visually-hidden">Find your perfect rental&nbsp;car</h2>
+          <CarFilterForm onSearch={handleSearch} onClear={handleClear} />
+        </div>
+      </section>
 
-      {isLoading && <p>Loading cars...</p>}
-      {isFetching && !isLoading && <p>Updating cars...</p>}
-      {isError && <p>Could not load cars.</p>}
-      {!isLoading && !isError && (
-        <>
-          <pre>{JSON.stringify(cars, null, 2)}</pre>
-          <button
-            onClick={() => fetchNextPage()}
-            disabled={!hasNextPage || isFetching}
-          >
-            {isFetchingNextPage
-              ? 'Loading more...'
-              : hasNextPage
-                ? 'Load more'
-                : 'Nothing more to load'}
-          </button>
-        </>
-      )}
-    </div>
+      <section>
+        <div className="container">
+          <h2 className="visually-hidden">Cars list</h2>
+          {isLoading && <p>Loading cars...</p>}
+          {isFetching && !isLoading && <p>Updating cars...</p>}
+          {isError && <p>Could not load cars.</p>}
+          {!isLoading && !isError && (
+            <>
+              <CarsList cars={cars} />
+              <button
+                type="button"
+                onClick={() => fetchNextPage()}
+                disabled={!hasNextPage || isFetching}
+              >
+                {isFetchingNextPage
+                  ? 'Loading more...'
+                  : hasNextPage
+                    ? 'Load more'
+                    : 'Nothing more to load'}
+              </button>
+            </>
+          )}
+        </div>
+      </section>
+    </>
   );
 };
 

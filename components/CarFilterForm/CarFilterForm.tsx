@@ -21,10 +21,7 @@ interface CarFilterFormProps {
   onClear: () => void;
 }
 
-const CarFilterForm = ({
-  onSearch,
-  onClear
-}: CarFilterFormProps) => {
+const CarFilterForm = ({ onSearch, onClear }: CarFilterFormProps) => {
   const fieldId = useId();
 
   const { brands: brandsList, price: priceRange } = useCarFilterStore(
@@ -37,7 +34,6 @@ const CarFilterForm = ({
 
   const setFilters = useCarFilterStore(state => state.setFilters);
   const filters = useCarFilterStore(state => state.filters);
-
 
   const handleFilterChange = (
     event:
