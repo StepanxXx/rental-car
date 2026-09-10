@@ -5,22 +5,38 @@ import {
   HydrationBoundary,
   QueryClient,
 } from '@tanstack/react-query';
-import { Suspense } from 'react';
+import { cache, Suspense } from 'react';
+import { unstable_cache } from 'next/cache';
 import { getCarsFilters } from '@/lib/api';
-import type { GetCarsParams } from '@/types/cars';
+import type { CarsFiltersResponse, GetCarsParams } from '@/types/cars';
 import CatalogClient from './Catalog.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
 import { carsInfiniteQuery } from '@/lib/queries';
 
 const baseUrl = getBaseUrl();
 
-/*
-// TODO: виконання запиту з кешуванням на день. Спробувати різні варіанти реалізації цього
-*/
-const filtersOptions = await getCarsFilters().catch(() => ({
-  brands: [] as string[],
+const EMPTY_FILTERS: CarsFiltersResponse = {
+  brands: [],
   price: { min: 0, max: 0 },
-}));
+};
+
+const getCachedFiltersOptions = unstable_cache(
+  async () => getCarsFilters(),
+  ['catalog-filters-options'],
+  {
+    revalidate: 60 * 60 * 24,
+    tags: ['catalog-filters-options'],
+  }
+);
+
+const readFiltersOptions = cache(async () => {
+  try {
+    return await getCachedFiltersOptions();
+  } catch (error) {
+    console.error('Failed to load catalog filters:', error);
+    return null;
+  }
+});
 
 export async function generateMetadata({
   searchParams,
@@ -28,12 +44,16 @@ export async function generateMetadata({
   searchParams: Promise<GetCarsParams>;
 }): Promise<Metadata> {
   const { brand, price, minMileage, maxMileage } = await searchParams;
-  const { brands, price: priceRange } = filtersOptions;
-  if (brand && !brands.includes(brand)) {
-    notFound();
-  }
-  if (price && (price < priceRange.min || price > priceRange.max)) {
-    notFound();
+  const filtersOptions = await readFiltersOptions();
+
+  if (filtersOptions) {
+    const { brands, price: priceRange } = filtersOptions;
+    if (brand && !brands.includes(brand)) {
+      notFound();
+    }
+    if (price && (price < priceRange.min || price > priceRange.max)) {
+      notFound();
+    }
   }
   const title =
     brand || price || minMileage || maxMileage
@@ -93,6 +113,7 @@ interface CatalogProps {
 }
 const Catalog = async ({ searchParams }: CatalogProps) => {
   const queryClient = new QueryClient();
+  const filtersOptions = await readFiltersOptions();
   const rawParams = await searchParams;
   const filters = {
     brand: rawParams.brand?.trim() ?? '',
@@ -108,7 +129,7 @@ const Catalog = async ({ searchParams }: CatalogProps) => {
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <Suspense fallback={<div className="container">Loading catalog...</div>}>
-        <CatalogClient filtersOptions={filtersOptions} />
+        <CatalogClient filtersOptions={filtersOptions ?? EMPTY_FILTERS} />
       </Suspense>
     </HydrationBoundary>
   );
