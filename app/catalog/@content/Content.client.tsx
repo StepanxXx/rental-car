@@ -42,13 +42,7 @@ const ContentClient = () => {
   const cars: Car[] = data?.pages.flatMap(page => page.cars) ?? [];
 
   if (isError) {
-    return (
-      <div className={css.errorWrapper} role="alert">
-        <p className={css.errorMessage}>
-          Failed to load cars. Please try again later.
-        </p>
-      </div>
-    );
+    throw Error('Failed to load cars');
   }
 
   if (!isLoading && cars.length === 0) {

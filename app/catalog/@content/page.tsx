@@ -20,12 +20,8 @@ const Content = async ({ searchParams }: CatalogProps) => {
     maxMileage: rawParams.maxMileage ? Number(rawParams.maxMileage) : undefined,
   };
 
-  try {
-    await queryClient.infiniteQuery(carsInfiniteQuery(filters));
-  } catch (error) {
-    console.error('SSR cars prefetch error:', error);
-  }
-
+  const data = await queryClient.infiniteQuery(carsInfiniteQuery(filters));
+  console.log(data.pages.map((p) => p.cars.length), data.pages.length);
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ContentClient />
