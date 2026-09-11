@@ -1,5 +1,3 @@
-
-
 import {
   dehydrate,
   HydrationBoundary,
@@ -8,7 +6,6 @@ import {
 import ContentClient from './Content.client';
 import type { CarFilters } from '@/types/cars';
 import { carsInfiniteQuery } from '@/lib/queries';
-
 
 interface CatalogProps {
   searchParams: Promise<CarFilters>;
@@ -23,13 +20,15 @@ const Content = async ({ searchParams }: CatalogProps) => {
     maxMileage: rawParams.maxMileage ? Number(rawParams.maxMileage) : undefined,
   };
 
-  queryClient
-    .infiniteQuery(carsInfiniteQuery(filters))
-    .catch(err => console.error('SSR cars prefetch error:', err));
+  try {
+    await queryClient.infiniteQuery(carsInfiniteQuery(filters));
+  } catch (error) {
+    console.error('SSR cars prefetch error:', error);
+  }
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-        <ContentClient/>
+      <ContentClient />
     </HydrationBoundary>
   );
 };

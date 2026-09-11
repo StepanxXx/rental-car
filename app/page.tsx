@@ -8,6 +8,7 @@ export default function Hero() {
       <Image
         src="/hero.avif"
         alt="Hero background"
+        sizes="100vw"
         fill
         priority
         style={{ objectFit: 'cover' }}

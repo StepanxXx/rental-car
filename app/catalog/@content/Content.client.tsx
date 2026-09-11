@@ -41,7 +41,15 @@ const ContentClient = () => {
 
   const cars: Car[] = data?.pages.flatMap(page => page.cars) ?? [];
 
-  if ((isError || cars.length === 0) && !isLoading) {
+  if (isError) {
+    return (
+      <p className={css.errorMessage} role="alert">
+        Failed to load cars. Please try again later.
+      </p>
+    );
+  }
+
+  if (!isLoading && cars.length === 0) {
     return <CarsNotFoundCard />;
   }
 
@@ -70,6 +78,6 @@ const ContentClient = () => {
       )}
     </>
   );
-}
+};
 
 export default ContentClient;

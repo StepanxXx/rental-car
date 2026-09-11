@@ -2,6 +2,12 @@
   position: relative;
 }
 
+.errorMessage {
+  margin: 48px auto 104px;
+  text-align: center;
+  color: var(--error);
+}
+
 .loadMore {
   display: block;
   margin: 48px auto 104px;

@@ -4,7 +4,7 @@ import { useEffect } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import CarFilterForm from '@/components/CarFilterForm/CarFilterForm';
 import { useCarFilterStore } from '@/lib/store/filterStore';
-import type {CarFilters, CarsFiltersResponse } from '@/types/cars';
+import type { CarFilters, CarsFiltersResponse } from '@/types/cars';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -33,7 +33,7 @@ const SearchClient = ({ filtersOptions }: CatalogClientProps) => {
 
   useEffect(() => {
     setFiltersOptions(filtersOptions);
-  });
+  }, [filtersOptions, setFiltersOptions]);
 
   useEffect(() => {
     setFilters(parseFilters(searchParams));
