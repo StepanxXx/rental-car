@@ -9,7 +9,7 @@ export default function CarsNotFoundCard() {
         className={css.image}
         src="/cars-not-found.avif"
         alt="Car"
-        width={413.59}
+        width={414}
         height={388}
         loading="lazy"
         decoding="async"
