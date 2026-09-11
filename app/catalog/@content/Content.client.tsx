@@ -43,9 +43,11 @@ const ContentClient = () => {
 
   if (isError) {
     return (
-      <p className={css.errorMessage} role="alert">
-        Failed to load cars. Please try again later.
-      </p>
+      <div className={css.errorWrapper} role="alert">
+        <p className={css.errorMessage}>
+          Failed to load cars. Please try again later.
+        </p>
+      </div>
     );
   }
 
@@ -56,7 +58,7 @@ const ContentClient = () => {
   return (
     <>
       <h2 className="visually-hidden">Cars list</h2>
-      {!isLoading && !isError && (
+      {!isLoading  && (
         <>
           <div className={css.carsListWrapper}>
             <CarsList cars={cars} />
