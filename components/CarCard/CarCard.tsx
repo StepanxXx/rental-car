@@ -12,16 +12,18 @@ export default function CarCard({ car }: CarCardProps) {
 
   return (
     <article className={css.card}>
-      <Image
-        className={css.image}
-        src={car.img}
-        alt={`${car.brand} ${car.model}, ${car.year}`}
-        width={244}
-        height={268}
-        loading="eager"
-        priority={true}
-        decoding="async"
-      />
+      <div className={css.imageWrapper}>
+        <Image
+          className={css.image}
+          src={car.img}
+          alt={`${car.brand} ${car.model}, ${car.year}`}
+          fill
+          sizes="(min-width: 1232px) 244px, (min-width: 768px) 320px, calc(100vw - 64px)"
+          loading="eager"
+          priority
+          decoding="async"
+        />
+      </div>
       <h3 className={css.title}>
         <span className={css.carName}>
           {car.brand} <span className={css.model}>{car.model}</span>, {car.year}
