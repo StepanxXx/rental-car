@@ -20,8 +20,8 @@ const Content = async ({ searchParams }: CatalogProps) => {
     maxMileage: rawParams.maxMileage ? Number(rawParams.maxMileage) : undefined,
   };
 
-  const data = await queryClient.infiniteQuery(carsInfiniteQuery(filters));
-  console.log(data.pages.map((p) => p.cars.length), data.pages.length);
+  await queryClient.infiniteQuery(carsInfiniteQuery(filters));
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
       <ContentClient />
