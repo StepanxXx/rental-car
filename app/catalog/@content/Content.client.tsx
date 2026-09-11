@@ -1,7 +1,7 @@
 'use client';
 
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
-import { useSearchParams, notFound } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import CarsList from '@/components/CarsList/CarsList';
 import type { Car, CarFilters } from '@/types/cars';
 import { carsInfiniteQuery } from '@/lib/queries';
@@ -41,13 +41,11 @@ const ContentClient = () => {
 
   const cars: Car[] = data?.pages.flatMap(page => page.cars) ?? [];
 
-    if ((isError || cars.length === 0) && !isLoading) {
-      notFound(); // Показує /profile/not-found.tsx
-    }
+  if ((isError || cars.length === 0) && !isLoading) {
+    return <CarsNotFoundCard />;
+  }
 
-  return (isError || cars.length === 0) && !isLoading ? (
-    <CarsNotFoundCard />
-  ) : (
+  return (
     <>
       <h2 className="visually-hidden">Cars list</h2>
       {!isLoading && !isError && (
@@ -72,6 +70,6 @@ const ContentClient = () => {
       )}
     </>
   );
-};
+}
 
 export default ContentClient;
