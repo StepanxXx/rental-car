@@ -2,11 +2,6 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
-import {
-  dehydrate,
-  HydrationBoundary,
-  QueryClient,
-} from '@tanstack/react-query';
 import { getCarsFilters } from '@/lib/api';
 import type { CarsFiltersResponse, GetCarsParams } from '@/types/cars';
 import SearchClient from './Search.client';
@@ -107,19 +102,10 @@ export async function generateMetadata({
   };
 }
 
-interface CatalogProps {
-  searchParams: Promise<GetCarsParams>;
-}
-const Catalog = async ({ searchParams }: CatalogProps) => {
-  const queryClient = new QueryClient();
+const Catalog = async () => {
   const filtersOptions = await readFiltersOptions();
 
-
-  return (
-    <HydrationBoundary state={dehydrate(queryClient)}>
-        <SearchClient filtersOptions={filtersOptions ?? EMPTY_FILTERS} />
-    </HydrationBoundary>
-  );
+  return <SearchClient filtersOptions={filtersOptions ?? EMPTY_FILTERS} />;
 };
 
 export default Catalog;
