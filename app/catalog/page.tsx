@@ -1,7 +1,7 @@
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { unstable_cache } from 'next/cache';
-import { cache, Suspense } from 'react';
+import { cache } from 'react';
 import {
   dehydrate,
   HydrationBoundary,
@@ -9,9 +9,8 @@ import {
 } from '@tanstack/react-query';
 import { getCarsFilters } from '@/lib/api';
 import type { CarsFiltersResponse, GetCarsParams } from '@/types/cars';
-import CatalogClient from './Catalog.client';
+import SearchClient from './Search.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
-import { carsInfiniteQuery } from '@/lib/queries';
 
 const baseUrl = getBaseUrl();
 
@@ -114,23 +113,11 @@ interface CatalogProps {
 const Catalog = async ({ searchParams }: CatalogProps) => {
   const queryClient = new QueryClient();
   const filtersOptions = await readFiltersOptions();
-  const rawParams = await searchParams;
-  const filters = {
-    brand: rawParams.brand?.trim() ?? '',
-    price: rawParams.price ? Number(rawParams.price) : undefined,
-    minMileage: rawParams.minMileage ? Number(rawParams.minMileage) : undefined,
-    maxMileage: rawParams.maxMileage ? Number(rawParams.maxMileage) : undefined,
-  };
 
-  queryClient
-    .infiniteQuery(carsInfiniteQuery(filters))
-    .catch(err => console.error('SSR cars prefetch error:', err));
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <Suspense fallback={<div className="container">Loading catalog...</div>}>
-        <CatalogClient filtersOptions={filtersOptions ?? EMPTY_FILTERS} />
-      </Suspense>
+        <SearchClient filtersOptions={filtersOptions ?? EMPTY_FILTERS} />
     </HydrationBoundary>
   );
 };

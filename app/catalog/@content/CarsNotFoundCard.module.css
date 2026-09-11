@@ -1,0 +1,46 @@
+.wrapper {
+  margin: 0 auto;
+}
+
+.image {
+  margin: 0 auto;
+  margin-bottom: 40px;
+}
+
+.title {
+  max-width: 351px;
+  margin: 0 auto;
+  margin-bottom: 16px;
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.33333;
+  text-align: center;
+  color: #101828;
+}
+
+.text {
+  max-width: 351px;
+  margin: 0 auto;
+  margin-bottom: 40px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  text-align: center;
+  color: #101828;
+}
+
+.buttonLink {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 156px;
+  margin: 0 auto 152px;
+  border: 1px solid #00aad4;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.buttonLink:hover,
+.buttonLink:focus-visible {
+  border-color: #0095ba;
+}

@@ -1,16 +1,10 @@
 'use client';
 
 import { useEffect } from 'react';
-import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import CarFilterForm from '@/components/CarFilterForm/CarFilterForm';
-import CarsList from '@/components/CarsList/CarsList';
 import { useCarFilterStore } from '@/lib/store/filterStore';
-import type { Car, CarFilters, CarsFiltersResponse } from '@/types/cars';
-import { carsInfiniteQuery } from '@/lib/queries';
-import css from './Catalog.module.css';
-import CarsLoader from '@/components/CarsLoader/CarsLoader';
-import CarsNotFoundCard from '@/components/CarsNotFoundCard/CarsNotFoundCard';
+import type {CarFilters, CarsFiltersResponse } from '@/types/cars';
 
 const FILTER_KEYS = ['brand', 'price', 'minMileage', 'maxMileage'] as const;
 
@@ -30,7 +24,7 @@ interface CatalogClientProps {
   filtersOptions: CarsFiltersResponse;
 }
 
-const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
+const SearchClient = ({ filtersOptions }: CatalogClientProps) => {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -41,24 +35,9 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
     setFiltersOptions(filtersOptions);
   });
 
-  const currentFilters = parseFilters(searchParams);
-
   useEffect(() => {
     setFilters(parseFilters(searchParams));
   }, [searchParams, setFilters]);
-
-  const {
-    data,
-    fetchNextPage,
-    hasNextPage,
-    isFetching,
-    isFetchingNextPage,
-    isError,
-    isLoading,
-  } = useInfiniteQuery({
-    ...carsInfiniteQuery(currentFilters),
-    placeholderData: keepPreviousData,
-  });
 
   const handleSearch = (nextFilters: CarFilters) => {
     const params = new URLSearchParams(searchParams.toString());
@@ -80,50 +59,7 @@ const CatalogClient = ({ filtersOptions }: CatalogClientProps) => {
     router.push(pathname);
   };
 
-  const cars: Car[] = data?.pages.flatMap(page => page.cars) ?? [];
-
-  return (
-    <main>
-      <h1 className="visually-hidden">Cars catalog</h1>
-      <section>
-        <div className={`container ${css.catalogContainer}`}>
-          <h2 className="visually-hidden">Find your perfect rental&nbsp;car</h2>
-          <CarFilterForm onSearch={handleSearch} onClear={handleClear} />
-        </div>
-      </section>
-      <section className={css.catalogSection}>
-        <div className={`container ${css.catalogContainer}`}>
-          {(isError || cars.length === 0) && !isLoading ? (
-            <CarsNotFoundCard />
-          ) : (
-            <>
-              <h2 className="visually-hidden">Cars list</h2>
-              {!isLoading && !isError && (
-                <>
-                  <div className={css.carsListWrapper}>
-                    <CarsList cars={cars} />
-                    <CarsLoader
-                      isActive={isLoading || isFetching || isFetchingNextPage}
-                    />
-                  </div>
-                  {hasNextPage && (
-                    <button
-                      className={css.loadMore}
-                      type="button"
-                      onClick={() => fetchNextPage()}
-                      disabled={isFetchingNextPage}
-                    >
-                      Load&nbsp;more
-                    </button>
-                  )}
-                </>
-              )}
-            </>
-          )}
-        </div>
-      </section>
-    </main>
-  );
+  return <CarFilterForm onSearch={handleSearch} onClear={handleClear} />;
 };
 
-export default CatalogClient;
+export default SearchClient;
