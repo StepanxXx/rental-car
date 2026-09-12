@@ -1,5 +1,4 @@
 import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { getCarsFilters } from '@/lib/api';
