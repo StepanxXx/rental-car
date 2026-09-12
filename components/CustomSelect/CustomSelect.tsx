@@ -45,7 +45,9 @@ export function CustomSelect({
     >
       <Select.Trigger id={id} className={`${css.trigger} ${className ?? ''}`}>
         <Select.Value placeholder={placeholder}>
-          {displayValuePrefix && value && `${displayValuePrefix}${value}`}
+          {displayValuePrefix
+            ? (value ?? `${displayValuePrefix}${value}`)
+            : (value ?? value)}
         </Select.Value>
 
         <Select.Icon className={css.icon}>
