@@ -32,42 +32,35 @@ export async function generateMetadata({
   params,
 }: EventDetailsProps): Promise<Metadata> {
   const { id } = await params;
+  const car = await queryClient.query(getCarQueryOptions(id));
+  const title = `Car: ${car.brand} ${car.model}, ${car.year}`;
+  const description = car.description.slice(0, 200);
 
-  try {
-    const car = await queryClient.query(getCarQueryOptions(id));
-    const title = `Car: ${car.brand} ${car.model}, ${car.year}`;
-    const description = car.description.slice(0, 200);
-
-    return {
+  return {
+    title: title,
+    description: description,
+    openGraph: {
       title: title,
       description: description,
-      openGraph: {
-        title: title,
-        description: description,
-        url: `/cars/${id}`,
-        siteName: 'Rental Car',
-        images: [
-          {
-            url: car.img,
-            width: 1200,
-            height: 630,
-            alt: title,
-          },
-        ],
-        type: 'article',
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: title,
-        description: description,
-        images: [car.img],
-      },
-    };
-  } catch {
-    return {
-      title: 'Car not found',
-    };
-  }
+      url: `/cars/${id}`,
+      siteName: 'Rental Car',
+      images: [
+        {
+          url: car.img,
+          width: 1200,
+          height: 630,
+          alt: title,
+        },
+      ],
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: title,
+      description: description,
+      images: [car.img],
+    },
+  };
 }
 
 export default async function EventDetailsPage({ params }: EventDetailsProps) {
