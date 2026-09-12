@@ -5,6 +5,7 @@ import './reset.css';
 import './globals.css';
 import Header from '@/components/Header/Header';
 import TanStackProvider from '@/components/TanStackProvider/TanStackProvider';
+import ToastProvider from '@/components/ToastProvider/ToastProvider';
 import baseUrl from '@/lib/getBaseUrl';
 
 const manrope = Manrope({
@@ -52,6 +53,7 @@ export default function RootLayout({
         <TanStackProvider>
           <Header />
           {children}
+          <ToastProvider />
         </TanStackProvider>
       </body>
     </html>

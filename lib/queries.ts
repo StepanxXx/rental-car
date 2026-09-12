@@ -1,5 +1,5 @@
-import { infiniteQueryOptions } from '@tanstack/react-query';
-import { getCars } from '@/lib/api';
+import { infiniteQueryOptions, mutationOptions } from '@tanstack/react-query';
+import { getCars, createBookingRequest, BookingRequestData } from '@/lib/api';
 import { INITIAL_PAGE, PER_PAGE } from '@/lib/const';
 import type { CarFilters } from '@/types/cars';
 
@@ -18,4 +18,16 @@ export const carsInfiniteQuery = (filters?: CarFilters) =>
       return nextPage <= lastResponse.totalPages ? nextPage : undefined;
     },
     staleTime: 1000 * 10,
+  });
+
+export const carBookingMutation = (
+  mutationFn: (data: BookingRequestData) => Promise<void>,
+  successCallback: () => void,
+  errorCallback: () => void
+) =>
+  mutationOptions({
+    mutationKey: ['carBooking'],
+    mutationFn: mutationFn,
+    onSuccess: successCallback,
+    onError: errorCallback,
   });

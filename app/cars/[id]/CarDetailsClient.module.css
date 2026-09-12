@@ -1,23 +1,21 @@
 .carContainer {
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-areas:
-    'car-img'
-    'car-booking-form'
-    'car-info-card';
-  padding: 0 16px;
+  display: flex;
+  flex-direction: column;
+}
+.leftSide {
+  display: flex;
+  flex-direction: column;
 }
 
 @media only screen and (min-width: 768px) {
   .carContainer {
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-      'car-img        car-img       car-booking-form'
-      'car-info-card  car-info-card car-info-card';
-    align-items: stretch;
+    flex-direction: row;
     gap: 16px;
     margin-top: 84px;
+  }
+  .leftSide {
+    min-width: 430px;
+    gap: 16px;
   }
 }
 
@@ -27,6 +25,10 @@
     grid-template-areas:
       'car-img car-info-card'
       'car-booking-form car-info-card ';
+    gap: 32px;
+  }
+.leftSide {
+    min-width: 640px;
     gap: 32px;
   }
 }
@@ -51,6 +53,7 @@
   .carInfoCard,
   .carBookingForm {
     border-radius: 16px;
+    width: 100%;
   }
 }
 
@@ -66,12 +69,13 @@
 
 .carBookingForm {
   grid-area: car-booking-form;
+  align-self: start;
   padding: 32px;
 }
 
 @media only screen and (min-width: 768px) {
   .carImg {
-    height: 472px;
+    height: 350px;
   }
 }
 
@@ -87,8 +91,9 @@
 
 .header {
   display: flex;
+  flex-wrap: wrap;
   align-items: baseline;
-  gap: 16px;
+  gap: 8px 16px;
   margin-bottom: 8px;
 }
 

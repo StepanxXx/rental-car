@@ -49,7 +49,7 @@ export const getCarById = async (id: string): Promise<Car> => {
   return response.data;
 };
 
-type BookingRequestData = {
+export type BookingRequestData = {
   name: string;
   email: string;
   comment?: string;

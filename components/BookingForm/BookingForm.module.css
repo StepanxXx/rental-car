@@ -1,0 +1,169 @@
+.form {
+  width: 100%;
+}
+
+.heading {
+  margin-bottom: 24px;
+}
+
+.title {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--main);
+}
+
+.description {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--gray);
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.controlWrapper {
+  position: relative;
+}
+
+.control {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+
+  color: var(--main);
+
+  border-radius: 12px;
+  padding: 14px 20px;
+
+  display: block;
+  width: 100%;
+  border: none;
+  outline: 1px solid transparent;
+  outline-offset: -1px;
+  background-color: var(--inputs);
+  transition:
+    border-color var(--transition-time),
+    box-shadow var(--transition-time),
+    outline-color var(--transition-time);
+}
+
+textarea.control {
+  height: 88px;
+  resize: none;
+  min-height: 88px;
+}
+
+.control::placeholder {
+  color: var(--gray);
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+}
+
+.control:hover {
+  border-color: var(--gray-light);
+}
+
+.control:focus-visible {
+  box-shadow: 0 0 0 2px var(--light-blue);
+}
+
+.control[aria-invalid='true'] {
+  outline-color: var(--error);
+  padding-right: 52px;
+  background-color: var(--error-light);
+}
+
+.control[aria-invalid='true']:focus-visible {
+  box-shadow: 0 0 0 2px rgb(236 56 59 / 18%);
+}
+
+.floatingLabel {
+  position: absolute;
+  top: -10px;
+  left: 13px;
+  z-index: 1;
+  border-radius: 8px;
+  padding: 0 8px;
+  background-color: var(--inputs);
+  color: var(--main);
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.33333;
+
+  opacity: 0;
+  transform: translateY(5px);
+  transition:
+    opacity var(--transition-time),
+    transform var(--transition-time),
+    background-color var(--transition-time),
+    color var(--transition-time);
+}
+
+.field:has(.control:focus-visible) .floatingLabel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.field:has(.control[aria-invalid='true']) .floatingLabel {
+  opacity: 1;
+  transform: translateY(0);
+  background-color: var(--error-light);
+  color: var(--error);
+}
+
+.errorIcon {
+  position: absolute;
+  right: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 20px;
+  width: 20px;
+  color: var(--error);
+  pointer-events: none;
+}
+
+.errorMessage {
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 1.33333;
+  color: var(--error);
+}
+
+.submitButton {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--white);
+
+  width: 100%;
+  height: 44px;
+  margin-top: 24px;
+  border: 0;
+  border-radius: 12px;
+  padding: 12px 24px;
+  background-color: var(--light-blue);
+  transition:
+    background-color var(--transition-time),
+    opacity var(--transition-time);
+}
+
+.submitButton:hover,
+.submitButton:focus-visible {
+  background-color: var(--dark-blue);
+}
+
+.submitButton:focus-visible {
+  outline: 2px solid var(--button-hover);
+  outline-offset: 2px;
+}
+
+.submitButton:disabled {
+  cursor: wait;
+  opacity: 0.7;
+}

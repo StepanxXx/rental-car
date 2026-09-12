@@ -45,7 +45,7 @@ export async function generateMetadata({
   const brand =
     queryBrand && brands.includes(queryBrand) ? queryBrand?.trim() : undefined;
   const price =
-    queryPrice && (queryPrice >= priceRange.min && queryPrice <= priceRange.max)
+    queryPrice && queryPrice >= priceRange.min && queryPrice <= priceRange.max
       ? Number(queryPrice)
       : undefined;
   const minMileage = queryMinMileage ? Number(queryMinMileage) : undefined;

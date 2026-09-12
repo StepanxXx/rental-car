@@ -3,8 +3,13 @@ import { Car } from '@/types/cars';
 import css from './CarDetailsClient.module.css';
 import { TfiLocationPin } from 'react-icons/tfi';
 import { PiCheckCircle, PiRoadHorizon } from 'react-icons/pi';
-import { BsCalendar2Week, BsCarFront, BsFuelPump, BsGear } from 'react-icons/bs';
-
+import {
+  BsCalendar2Week,
+  BsCarFront,
+  BsFuelPump,
+  BsGear,
+} from 'react-icons/bs';
+import BookingForm from '@/components/BookingForm/BookingForm';
 
 interface CarDetailsClientProps {
   car: Car;
@@ -13,17 +18,22 @@ interface CarDetailsClientProps {
 export default async function CarDetailsClient({ car }: CarDetailsClientProps) {
   return (
     <div className={`container ${css.carContainer}`}>
-      <div className={css.carImg}>
-        <div className={css.carImgWrapper}>
-          <Image
-            src={car.img}
-            alt={`${car.brand} ${car.model}, ${car.year}`}
-            fill
-            sizes="(min-width: 1232px) 640px, (min-width: 768px) 352px, 343px"
-            loading="eager"
-            priority
-            decoding="async"
-          />
+      <div className={css.leftSide}>
+        <div className={css.carImg}>
+          <div className={css.carImgWrapper}>
+            <Image
+              src={car.img}
+              alt={`${car.brand} ${car.model}, ${car.year}`}
+              fill
+              sizes="(min-width: 1232px) 640px, (min-width: 768px) 352px, 343px"
+              loading="eager"
+              priority
+              decoding="async"
+            />
+          </div>
+        </div>
+        <div className={css.carBookingForm}>
+          <BookingForm carId={car.id} />
         </div>
       </div>
       <div className={css.carInfoCard}>
@@ -91,7 +101,6 @@ export default async function CarDetailsClient({ car }: CarDetailsClientProps) {
           </ul>
         </section>
       </div>
-      <div className={css.carBookingForm}></div>
     </div>
   );
 }
