@@ -32,10 +32,16 @@ export function CustomSelect({
   return (
     <Select.Root
       value={value}
-      onValueChange={value =>
-        onChange({ target: { name, value: String(value) } })
-      }
-      defaultValue={placeholder}
+      onValueChange={nextValue => {
+        if (nextValue === '') return;
+
+        onChange({
+          target: {
+            name,
+            value: nextValue,
+          },
+        });
+      }}
     >
       <Select.Trigger id={id} className={`${css.trigger} ${className ?? ''}`}>
         <Select.Value placeholder={placeholder}>
