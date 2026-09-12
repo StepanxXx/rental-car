@@ -1,0 +1,170 @@
+.carContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    'car-img'
+    'car-booking-form'
+    'car-info-card';
+  padding: 0 16px;
+}
+
+@media only screen and (min-width: 768px) {
+  .carContainer {
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      'car-img        car-img       car-booking-form'
+      'car-info-card  car-info-card car-info-card';
+    align-items: stretch;
+    gap: 16px;
+    margin-top: 84px;
+  }
+}
+
+@media only screen and (min-width: 1232px) {
+  .carContainer {
+    grid-template-columns: 640px 1fr;
+    grid-template-areas:
+      'car-img car-info-card'
+      'car-booking-form car-info-card ';
+    gap: 32px;
+  }
+}
+
+.carImgWrapper {
+  position: relative;
+  flex: 0 0 auto;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.carImg,
+.carInfoCard,
+.carBookingForm {
+  background-color: var(--white);
+  overflow: hidden;
+}
+
+@media only screen and (min-width: 768px) {
+  .carImg,
+  .carInfoCard,
+  .carBookingForm {
+    border-radius: 16px;
+  }
+}
+
+.carImg {
+  grid-area: car-img;
+  height: 268px;
+}
+
+.carInfoCard {
+  grid-area: car-info-card;
+  padding: 32px 24px 4px 24px;
+}
+
+.carBookingForm {
+  grid-area: car-booking-form;
+  padding: 32px;
+}
+
+@media only screen and (min-width: 768px) {
+  .carImg {
+    height: 472px;
+  }
+}
+
+@media only screen and (min-width: 1232px) {
+  .carImg {
+    height: 512px;
+  }
+}
+
+.headerSection {
+  margin-bottom: 68px;
+}
+
+.header {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 8px;
+}
+
+.header h1 {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.33333;
+  text-align: center;
+  color: var(--main);
+}
+
+.headerArticle {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--gray);
+}
+
+.headerLocation {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--main);
+  margin-bottom: 16px;
+}
+
+.headerPrice {
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 1.33333;
+  color: var(--light-blue);
+  margin-bottom: 32px;
+}
+
+.headerDescription {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--main);
+}
+.conditionsSection {
+  margin-bottom: 24px;
+}
+.specificationsSection {
+  margin-bottom: 24px;
+}
+.listTitle {
+  font-weight: 600;
+  font-size: 20px;
+  line-height: 1.2;
+  color: var(--main);
+  margin-bottom: 20px;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-bottom: 1px solid var(--gray-light);
+  padding-bottom: 24px;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 1.25;
+  color: var(--main);
+}
+
+.listItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.featuresSection .list {
+  border: none;
+  padding-bottom: 0;
+}

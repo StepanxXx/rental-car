@@ -1,28 +1,22 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { QueryClient } from '@tanstack/react-query';
+import { cache } from 'react';
 import axios from 'axios';
 import { getCarById } from '@/lib/api';
 import CarDetailsClient from './CarDetailsClient';
+import css from './CarDetailsClient.module.css';
 
-const queryClient = new QueryClient();
+const getCar = cache(async (id: string) => {
+  try {
+    return await getCarById(id);
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      notFound();
+    }
 
-function getCarQueryOptions(id: string) {
-  return {
-    queryKey: ['car', id],
-    queryFn: async () => {
-      try {
-        return await getCarById(id);
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response?.status === 404) {
-          notFound();
-        }
-
-        throw error;
-      }
-    },
-  };
-}
+    throw error;
+  }
+});
 
 interface EventDetailsProps {
   params: Promise<{ id: string }>;
@@ -32,7 +26,7 @@ export async function generateMetadata({
   params,
 }: EventDetailsProps): Promise<Metadata> {
   const { id } = await params;
-  const car = await queryClient.query(getCarQueryOptions(id));
+  const car = await getCar(id);
   const title = `Car: ${car.brand} ${car.model}, ${car.year}`;
   const description = car.description.slice(0, 200);
 
@@ -65,8 +59,11 @@ export async function generateMetadata({
 
 export default async function EventDetailsPage({ params }: EventDetailsProps) {
   const { id } = await params;
+  const car = await getCar(id);
 
-  const car = await queryClient.query(getCarQueryOptions(id));
-
-  return <CarDetailsClient car={car} />;
+  return (
+    <main>
+      <CarDetailsClient car={car} />;
+    </main>
+  );
 }

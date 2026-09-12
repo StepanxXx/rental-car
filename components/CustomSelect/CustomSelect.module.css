@@ -11,12 +11,11 @@
 }
 
 .selectIcon {
-  transform: translateY(-50%) rotate(180deg);
-  transform-origin: center;
   transition: transform var(--transition-time);
+  font-size: 20px;
 }
 [aria-expanded='true'] .selectIcon {
-  transform: translateY(-50%) rotate(0deg);
+  transform: rotate(180deg);
 }
 
 .content {

@@ -11,7 +11,7 @@ export default function Header() {
       <div className={`container ${css.headerContainer}`}>
         <Link href="/" aria-label="Home" className={css.headerLink}>
           <svg width="104" height="16">
-            <use href="icons.svg#icon-Logo"></use>
+            <use href="/icons.svg#icon-Logo"></use>
           </svg>
         </Link>
         <nav aria-label="Main Navigation">

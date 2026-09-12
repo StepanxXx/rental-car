@@ -1,5 +1,6 @@
 import * as Select from '@radix-ui/react-select';
 import SimpleBar from 'simplebar-react';
+import { IoIosArrowDown } from 'react-icons/io';
 import 'simplebar-react/dist/simplebar.min.css';
 import css from './CustomSelect.module.css';
 
@@ -51,15 +52,7 @@ export function CustomSelect({
         </Select.Value>
 
         <Select.Icon className={css.icon}>
-          <svg
-            className={css.selectIcon}
-            width="13"
-            height="7"
-            aria-hidden="true"
-            focusable="false"
-          >
-            <use href="/icons.svg#icon-chevron-up" />
-          </svg>
+          <IoIosArrowDown className={css.selectIcon} />
         </Select.Icon>
       </Select.Trigger>
 

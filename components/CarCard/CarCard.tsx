@@ -19,8 +19,7 @@ export default function CarCard({ car }: CarCardProps) {
           alt={`${car.brand} ${car.model}, ${car.year}`}
           fill
           sizes="(min-width: 1232px) 244px, (min-width: 768px) 320px, calc(100vw - 64px)"
-          loading="eager"
-          priority
+          loading="lazy"
           decoding="async"
         />
       </div>
