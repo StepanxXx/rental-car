@@ -37,18 +37,25 @@ export async function generateMetadata({
 }: {
   searchParams: Promise<GetCarsParams>;
 }): Promise<Metadata> {
-  const { brand, price, minMileage, maxMileage } = await searchParams;
-  const filtersOptions = await readFiltersOptions();
+  const {
+    brand: queryBrand,
+    price: queryPrice,
+    minMileage: queryMinMileage,
+    maxMileage: queryMaxMileage,
+  } = await searchParams;
 
-  if (filtersOptions) {
-    const { brands, price: priceRange } = filtersOptions;
-    if (brand && !brands.includes(brand)) {
-      notFound();
-    }
-    if (price && (price < priceRange.min || price > priceRange.max)) {
-      notFound();
-    }
-  }
+  const { brands, price: priceRange } = (await readFiltersOptions()) ?? EMPTY_FILTERS;
+
+  const brand = queryBrand && brands.includes(queryBrand)
+    ? queryBrand?.trim()
+    : undefined;
+  const price =
+    queryPrice && (queryPrice < priceRange.min || queryPrice > priceRange.max)
+      ? Number(queryPrice)
+      : undefined;
+  const minMileage = queryMinMileage ? Number(queryMinMileage) : undefined;
+  const maxMileage = queryMaxMileage ? Number(queryMaxMileage) : undefined;
+
   const title =
     brand || price || minMileage || maxMileage
       ? 'RentalCars catalog filtered by: ' +
