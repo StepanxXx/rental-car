@@ -134,9 +134,7 @@
 
   color: var(--white);
   background-color: var(--light-blue);
-  transition:
-    background-color var(--transition-time),
-
+  transition: background-color var(--transition-time);
 }
 
 .readMore:hover,

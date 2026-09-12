@@ -4,21 +4,15 @@ import {
   QueryClient,
 } from '@tanstack/react-query';
 import ContentClient from './Content.client';
-import type { CarFilters } from '@/types/cars';
+import { parseCarFilters, type CarFilterSearchParams } from '@/lib/carFilters';
 import { carsInfiniteQuery } from '@/lib/queries';
 
 interface CatalogProps {
-  searchParams: Promise<CarFilters>;
+  searchParams: Promise<CarFilterSearchParams>;
 }
 const Content = async ({ searchParams }: CatalogProps) => {
   const queryClient = new QueryClient();
-  const rawParams = await searchParams;
-  const filters = {
-    brand: rawParams.brand?.trim() ?? '',
-    price: rawParams.price ? Number(rawParams.price) : undefined,
-    minMileage: rawParams.minMileage ? Number(rawParams.minMileage) : undefined,
-    maxMileage: rawParams.maxMileage ? Number(rawParams.maxMileage) : undefined,
-  };
+  const filters = parseCarFilters(await searchParams);
 
   await queryClient.infiniteQuery(carsInfiniteQuery(filters));
 

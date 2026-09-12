@@ -1,4 +1,5 @@
 import { create } from 'zustand';
+import { EMPTY_CAR_FILTERS, EMPTY_FILTER_OPTIONS } from '@/lib/carFilters';
 import type { CarFilters, CarsFiltersResponse } from '@/types/cars';
 
 type CarFilterStore = {
@@ -9,22 +10,10 @@ type CarFilterStore = {
   clearFilters: () => void;
 };
 
-const initialFilters: CarFilters = {
-  brand: '',
-  price: undefined,
-  minMileage: undefined,
-  maxMileage: undefined,
-};
-
-const initialFiltersOptions: CarsFiltersResponse = {
-  brands: [],
-  price: { min: 0, max: 0 },
-};
-
 export const useCarFilterStore = create<CarFilterStore>()(set => ({
-  filtersOptions: initialFiltersOptions,
+  filtersOptions: EMPTY_FILTER_OPTIONS,
   setFiltersOptions: filtersOptions => set({ filtersOptions }),
-  filters: initialFilters,
+  filters: EMPTY_CAR_FILTERS,
   setFilters: filters => set({ filters }),
-  clearFilters: () => set({ filters: initialFilters }),
+  clearFilters: () => set({ filters: EMPTY_CAR_FILTERS }),
 }));

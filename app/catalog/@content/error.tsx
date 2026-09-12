@@ -1,6 +1,6 @@
 'use client';
 
-import css from '../CatalogLayout.module.css';
+import CatalogError from '@/components/CatalogError/CatalogError';
 
 interface ErrorProps {
   reset: () => void;
@@ -8,13 +8,9 @@ interface ErrorProps {
 
 export default function ContentError({ reset }: ErrorProps) {
   return (
-    <div className={css.errorWrapper} role="alert">
-      <p className={css.errorMessage}>
-        Failed to load cars. Please try again later.
-      </p>
-      <button className={css.retryButton} type="button" onClick={reset}>
-        Try again
-      </button>
-    </div>
+    <CatalogError
+      message="Failed to load cars. Please try again later."
+      onRetry={reset}
+    />
   );
 }

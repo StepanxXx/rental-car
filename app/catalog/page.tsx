@@ -2,16 +2,12 @@ import { Metadata } from 'next';
 import { unstable_cache } from 'next/cache';
 import { cache } from 'react';
 import { getCarsFilters } from '@/lib/api';
-import type { CarsFiltersResponse, GetCarsParams } from '@/types/cars';
+import type { GetCarsParams } from '@/types/cars';
+import { EMPTY_FILTER_OPTIONS } from '@/lib/carFilters';
 import SearchClient from './Search.client';
 import { getBaseUrl } from '@/lib/getBaseUrl';
 
 const baseUrl = getBaseUrl();
-
-const EMPTY_FILTERS: CarsFiltersResponse = {
-  brands: [],
-  price: { min: 0, max: 0 },
-};
 
 const getCachedFiltersOptions = unstable_cache(
   async () => getCarsFilters(),
@@ -43,11 +39,11 @@ export async function generateMetadata({
     maxMileage: queryMaxMileage,
   } = await searchParams;
 
-  const { brands, price: priceRange } = (await readFiltersOptions()) ?? EMPTY_FILTERS;
+  const { brands, price: priceRange } =
+    (await readFiltersOptions()) ?? EMPTY_FILTER_OPTIONS;
 
-  const brand = queryBrand && brands.includes(queryBrand)
-    ? queryBrand?.trim()
-    : undefined;
+  const brand =
+    queryBrand && brands.includes(queryBrand) ? queryBrand?.trim() : undefined;
   const price =
     queryPrice && (queryPrice < priceRange.min || queryPrice > priceRange.max)
       ? Number(queryPrice)
@@ -111,7 +107,9 @@ export async function generateMetadata({
 const Catalog = async () => {
   const filtersOptions = await readFiltersOptions();
 
-  return <SearchClient filtersOptions={filtersOptions ?? EMPTY_FILTERS} />;
+  return (
+    <SearchClient filtersOptions={filtersOptions ?? EMPTY_FILTER_OPTIONS} />
+  );
 };
 
 export default Catalog;

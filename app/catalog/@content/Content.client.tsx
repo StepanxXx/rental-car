@@ -3,28 +3,17 @@
 import { keepPreviousData, useInfiniteQuery } from '@tanstack/react-query';
 import { useSearchParams } from 'next/navigation';
 import CarsList from '@/components/CarsList/CarsList';
-import type { Car, CarFilters } from '@/types/cars';
+import type { Car } from '@/types/cars';
+import { parseCarFilters } from '@/lib/carFilters';
 import { carsInfiniteQuery } from '@/lib/queries';
 import css from './Content.module.css';
 import CarsLoader from '@/components/CarsLoader/CarsLoader';
 import CarsNotFoundCard from '@/components/CarsNotFoundCard/CarsNotFoundCard';
 
-const parseNumber = (value: string | null) => {
-  const num = Number(value);
-  return value && Number.isFinite(num) ? num : undefined;
-};
-
-const parseFilters = (searchParams: URLSearchParams): CarFilters => ({
-  brand: searchParams.get('brand')?.trim() ?? '',
-  price: parseNumber(searchParams.get('price')),
-  minMileage: parseNumber(searchParams.get('minMileage')),
-  maxMileage: parseNumber(searchParams.get('maxMileage')),
-});
-
 const ContentClient = () => {
   const searchParams = useSearchParams();
 
-  const currentFilters = parseFilters(searchParams);
+  const currentFilters = parseCarFilters(searchParams);
 
   const {
     data,
@@ -52,7 +41,7 @@ const ContentClient = () => {
   return (
     <>
       <h2 className="visually-hidden">Cars list</h2>
-      {!isLoading  && (
+      {!isLoading && (
         <>
           <div className={css.carsListWrapper}>
             <CarsList cars={cars} />
