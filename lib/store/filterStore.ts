@@ -3,9 +3,9 @@ import { EMPTY_CAR_FILTERS, EMPTY_FILTER_OPTIONS } from '@/lib/carFilters';
 import type { CarFilters, CarsFiltersResponse } from '@/types/cars';
 
 type CarFilterStore = {
-  filters: CarFilters;
   filtersOptions: CarsFiltersResponse;
   setFiltersOptions: (filtersOptions: CarsFiltersResponse) => void;
+  filters: CarFilters;
   setFilters: (filters: CarFilters) => void;
   clearFilters: () => void;
 };

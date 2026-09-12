@@ -32,11 +32,9 @@ const CarFilterForm = ({ onSearch, onClear }: CarFilterFormProps) => {
   const setFilters = useCarFilterStore(state => state.setFilters);
   const filters = useCarFilterStore(state => state.filters);
 
-  const handleFilterChange = (
-    event:
-      | React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-      | { target: { name: string; value: string } }
-  ) => {
+  const handleFilterChange = (event: {
+    target: { name: string; value: string };
+  }) => {
     const { name, value } = event.target;
     const key = name as FilterKey;
     const nextFilters = {
