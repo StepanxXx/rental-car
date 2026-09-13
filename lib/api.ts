@@ -29,9 +29,9 @@ export const getCars = async ({
   const response = await api.get<CarsListResponse>('/cars', {
     params: {
       ...(brand && { brand }),
-      ...(price && { price }),
-      ...(minMileage && { minMileage }),
-      ...(maxMileage && { maxMileage }),
+      ...(price !== undefined && { price }),
+      ...(minMileage !== undefined && { minMileage }),
+      ...(maxMileage !== undefined && { maxMileage }),
       perPage,
       page,
     },

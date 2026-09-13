@@ -1,5 +1,5 @@
 import { infiniteQueryOptions, mutationOptions } from '@tanstack/react-query';
-import { getCars, createBookingRequest, BookingRequestData } from '@/lib/api';
+import { getCars, BookingRequestData } from '@/lib/api';
 import { INITIAL_PAGE, PER_PAGE } from '@/lib/const';
 import type { CarFilters } from '@/types/cars';
 

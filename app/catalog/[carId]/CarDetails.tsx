@@ -1,6 +1,4 @@
 import Image from 'next/image';
-import { Car } from '@/types/cars';
-import css from './CarDetailsClient.module.css';
 import { TfiLocationPin } from 'react-icons/tfi';
 import { PiCheckCircle, PiRoadHorizon } from 'react-icons/pi';
 import {
@@ -10,12 +8,12 @@ import {
   BsGear,
 } from 'react-icons/bs';
 import BookingForm from '@/components/BookingForm/BookingForm';
+import type { Car } from '@/types/cars';
+import css from './CarDetails.module.css';
 
-interface CarDetailsClientProps {
-  car: Car;
-}
+export default function CarDetails({ car }: { car: Car }) {
+  const mileage = new Intl.NumberFormat('uk-UA').format(car.mileage);
 
-export default async function CarDetailsClient({ car }: CarDetailsClientProps) {
   return (
     <div className={`container ${css.carContainer}`}>
       <div className={css.leftSide}>
@@ -36,7 +34,7 @@ export default async function CarDetailsClient({ car }: CarDetailsClientProps) {
           <BookingForm carId={car.id} />
         </div>
       </div>
-      <div className={css.carInfoCard}>
+      <article className={css.carInfoCard}>
         <section className={css.headerSection}>
           <div className={css.header}>
             <h1>
@@ -100,7 +98,7 @@ export default async function CarDetailsClient({ car }: CarDetailsClientProps) {
             ))}
           </ul>
         </section>
-      </div>
+      </article>
     </div>
   );
 }

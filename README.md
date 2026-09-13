@@ -1,16 +1,17 @@
 # RentalCar
 
-A web application for finding and renting cars. The project is built with
-Next.js, TypeScript, React Query, and CSS Modules.
+A web application for finding and renting cars. It provides a searchable,
+paginated catalog, detailed car pages, and an online rental request form.
 
-## Current Status
+## Features
 
-- Responsive home page with a hero section
-- Shared header and navigation between pages
-- `/catalog` route (currently a placeholder)
-- Configured API client for cars, filters, and rental requests
-- React Query and React Query Devtools integration
-- Open Graph and Twitter metadata
+- Responsive home page with a catalog call to action
+- Server-side brand, price, and mileage filtering
+- Load-more pagination powered by TanStack Query `useInfiniteQuery`
+- Car details pages that open from the catalog in a new browser tab
+- Validated rental request form with success and error notifications
+- Loading, empty, not-found, and API error states
+- Per-page Open Graph metadata
 
 ## Tech Stack
 
@@ -33,7 +34,7 @@ Next.js, TypeScript, React Query, and CSS Modules.
 ### Installation
 
 ```bash
-git clone <repository-url>
+git clone https://github.com/StepanxXx/rental-car.git
 cd rental-car
 npm install
 ```
@@ -41,7 +42,7 @@ npm install
 Create a `.env` file in the project root:
 
 ```env
-NEXT_PUBLIC_CAR_RENTAL_URL=https://your-api.example.com
+NEXT_PUBLIC_CAR_RENTAL_URL=https://car-rental-api.goit.study
 ```
 
 You can also provide the following optional variables:
@@ -76,10 +77,11 @@ The application will be available at
 
 ## Routes
 
-| Route      | Description                  |
-| ---------- | ---------------------------- |
-| `/`        | Home page                    |
-| `/catalog` | Car catalog (in development) |
+| Route              | Description                         |
+| ------------------ | ----------------------------------- |
+| `/`                | Home page                           |
+| `/catalog`         | Filterable, paginated car catalog   |
+| `/catalog/[carId]` | Car details and rental request form |
 
 ## API Integration
 
@@ -110,3 +112,7 @@ npm run lint
 npm run format:check
 npm run build
 ```
+
+## Author
+
+[StepanxXx](https://github.com/StepanxXx)
