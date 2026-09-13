@@ -73,7 +73,7 @@ export default function CarDetails({ car }: { car: Car }) {
             </li>
             <li className={css.listItem}>
               <BsFuelPump />
-              Fuel Consumption:{car.fuelConsumption}
+              Fuel Consumption: {car.fuelConsumption}
             </li>
             <li className={css.listItem}>
               <BsGear />
