@@ -1,17 +1,23 @@
-# RentalCar
+# RentalCar — Car Rental Application
 
-A web application for finding and renting cars. It provides a searchable,
-paginated catalog, detailed car pages, and an online rental request form.
+RentalCar is a responsive car rental application built with Next.js and
+TypeScript. Users can browse a server-filtered catalog, progressively load more
+cars, open a detailed car page, and submit a rental request.
 
 ## Features
 
-- Responsive home page with a catalog call to action
-- Server-side brand, price, and mileage filtering
-- Load-more pagination powered by TanStack Query `useInfiniteQuery`
-- Car details pages that open from the catalog in a new browser tab
-- Validated rental request form with success and error notifications
+- Home page with a hero section and a **View Catalog** call to action
+- Catalog populated from the Rental Car API
+- Server-side filtering by brand, hourly price, and mileage range
+- Filters synchronized with URL search parameters
+- **Load more** pagination powered by TanStack Query `useInfiniteQuery`
+- Server-prefetched catalog data hydrated on the client
+- Car details pages opened from catalog cards in a new browser tab
+- Rental request form validated with Yup
+- Persisted form drafts powered by Zustand
+- Success and error notifications powered by React Hot Toast
 - Loading, empty, not-found, and API error states
-- Per-page Open Graph metadata
+- Page-specific SEO, Open Graph, and Twitter metadata
 
 ## Tech Stack
 
@@ -21,6 +27,11 @@ paginated catalog, detailed car pages, and an online rental request form.
 - TanStack React Query
 - Axios
 - Zustand
+- Yup
+- Radix UI Select
+- React Icons
+- React Hot Toast
+- SimpleBar
 - CSS Modules
 - ESLint and Prettier
 
@@ -39,19 +50,19 @@ cd rental-car
 npm install
 ```
 
-Create a `.env` file in the project root:
+Create a `.env` file in the project root. The API URL is required:
 
 ```env
 NEXT_PUBLIC_CAR_RENTAL_URL=https://car-rental-api.goit.study
 ```
 
-You can also provide the following optional variables:
+Optional environment variables:
 
 ```env
-# Public site URL used in metadata
+# Public deployment URL used to generate absolute metadata URLs
 NEXT_PUBLIC_SITE_URL=https://your-site.example.com
 
-# Allowed origin for local development
+# Additional origin allowed by the Next.js development server
 NEXT_DEV_ORIGIN=your-dev-host.example.com
 ```
 
@@ -66,14 +77,14 @@ The application will be available at
 
 ## Available Scripts
 
-| Command                | Description                              |
-| ---------------------- | ---------------------------------------- |
-| `npm run dev`          | Start the local development server       |
-| `npm run build`        | Create a production build                |
-| `npm run start`        | Start the production server              |
-| `npm run lint`         | Check the code with ESLint               |
-| `npm run format`       | Format files with Prettier               |
-| `npm run format:check` | Check formatting without modifying files |
+| Command                | Description                                  |
+| ---------------------- | -------------------------------------------- |
+| `npm run dev`          | Start the development server                 |
+| `npm run build`        | Create an optimized production build         |
+| `npm run start`        | Start the previously built production server |
+| `npm run lint`         | Check the project with ESLint                |
+| `npm run format`       | Format supported files with Prettier         |
+| `npm run format:check` | Check formatting without modifying files     |
 
 ## Routes
 
@@ -85,31 +96,60 @@ The application will be available at
 
 ## API Integration
 
-The API base URL is configured through the `NEXT_PUBLIC_CAR_RENTAL_URL`
-environment variable. The client in `lib/api.ts` supports the following
-requests:
+The Axios client in `lib/api.ts` reads its base URL from
+`NEXT_PUBLIC_CAR_RENTAL_URL` and supports these requests:
 
 - `GET /cars` — retrieve cars with pagination and filters
 - `GET /cars/filters` — retrieve available brands and the price range
 - `GET /cars/:id` — retrieve a specific car
 - `POST /cars/:id/booking-requests` — submit a rental request
 
+Catalog filters are sent to the backend as `brand`, `price`, `minMileage`, and
+`maxMileage` query parameters. Pagination uses `page` and `perPage`; every
+additional page is requested with the currently active filters.
+
+## Architecture Notes
+
+- The project uses the Next.js App Router and React Server Components by
+  default.
+- `app/catalog/(overview)` is a route group for the catalog overview. Its
+  `@content` parallel route keeps the filter controls and car results separated
+  without adding a URL segment.
+- `app/catalog/[carId]` is outside the overview group, so the details page does
+  not inherit the catalog filter layout.
+- The first catalog page is prefetched on the server, dehydrated, and restored
+  inside `HydrationBoundary`. Further pages are fetched in the client with
+  `useInfiniteQuery`.
+- Filter values are stored in Zustand and mirrored in the URL, so filtered
+  catalog views can be bookmarked or shared.
+- Rental form drafts are persisted in local storage independently for every car.
+
 ## Project Structure
 
 ```text
-app/          Pages, layout, and global styles
-components/   Reusable React components
-lib/          API client and utility functions
-public/       Static images and SVG files
-types/        TypeScript domain types
-swagger.json  API specification
+app/
+  catalog/
+    (overview)/       Catalog filters, parallel results slot, and error states
+    [carId]/          Dynamic car details page
+  layout.tsx          Root layout and providers
+  page.tsx            Home page
+components/           Reusable UI components
+lib/
+  store/              Zustand stores
+  api.ts              Axios requests
+  carFilters.ts       Filter parsing and URL serialization
+  queries.ts          Shared TanStack Query options
+public/               Images and SVG sprite
+types/                TypeScript domain models
+swagger.json          Backend OpenAPI specification
 ```
 
-## Pre-release Checks
+## Quality Checks
 
 ```bash
 npm run lint
 npm run format:check
+npx tsc --noEmit
 npm run build
 ```
 
