@@ -53,7 +53,6 @@ export default function CarCard({ car }: CarCardProps) {
       <Link
         className={css.readMore}
         href={`/catalog/${car.id}`}
-        target="_blank"
         rel="noopener noreferrer"
         aria-label={`Read more about ${car.brand} ${car.model}`}
       >

@@ -27,7 +27,7 @@
       'car-booking-form car-info-card ';
     gap: 32px;
   }
-.leftSide {
+  .leftSide {
     min-width: 640px;
     gap: 32px;
   }

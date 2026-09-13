@@ -1,4 +1,6 @@
 import css from './CatalogLayout.module.css';
+import { Suspense } from 'react';
+import CarsLoader from '@/components/CarsLoader/CarsLoader';
 
 export default function CatalogLayout({
   children,
@@ -17,7 +19,11 @@ export default function CatalogLayout({
         </div>
       </section>
       <section>
-        <div className={`container ${css.catalogContainer}`}>{content}</div>
+        <div className={`container ${css.catalogContainer}`}>
+          <Suspense fallback={<CarsLoader isActive={true} />}>
+            {content}
+          </Suspense>
+        </div>
       </section>
     </main>
   );

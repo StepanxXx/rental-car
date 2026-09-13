@@ -12,8 +12,6 @@ import type { Car } from '@/types/cars';
 import css from './CarDetails.module.css';
 
 export default function CarDetails({ car }: { car: Car }) {
-  const mileage = new Intl.NumberFormat('uk-UA').format(car.mileage);
-
   return (
     <div className={`container ${css.carContainer}`}>
       <div className={css.leftSide}>
