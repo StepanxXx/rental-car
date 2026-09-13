@@ -65,23 +65,23 @@ export default function CarDetails({ car }: { car: Car }) {
           <ul className={css.list}>
             <li className={css.listItem}>
               <BsCalendar2Week />
-              {car.year}
+              Year: {car.year}
             </li>
             <li className={css.listItem}>
               <BsCarFront />
-              {car.type}
+              Type: {car.type}
             </li>
             <li className={css.listItem}>
               <BsFuelPump />
-              {car.fuelConsumption}
+              Fuel Consumption:{car.fuelConsumption}
             </li>
             <li className={css.listItem}>
               <BsGear />
-              {car.engine}
+              Engine: {car.engine}
             </li>
             <li className={css.listItem}>
               <PiRoadHorizon />
-              {car.mileage} km
+              Mileage: {car.mileage} km
             </li>
           </ul>
         </section>
