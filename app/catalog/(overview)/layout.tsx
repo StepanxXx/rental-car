@@ -15,7 +15,7 @@ export default function CatalogLayout({
       <section>
         <div className={`container ${css.catalogContainer}`}>
           <h2 className="visually-hidden">Find your perfect rental car</h2>
-          {children}
+          <Suspense fallback={<p> Loading... </p>}>{children}</Suspense>
         </div>
       </section>
       <section>
