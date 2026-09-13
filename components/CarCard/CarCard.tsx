@@ -23,7 +23,10 @@ export default function CarCard({ car }: CarCardProps) {
           decoding="async"
         />
       </div>
-      <h3 className={css.title}>
+      <h3
+        className={css.title}
+        data-tooltip={`${car.brand} ${car.model}, ${car.year}`}
+      >
         <span className={css.carName}>
           {car.brand} <span className={css.model}>{car.model}</span>, {car.year}
         </span>
