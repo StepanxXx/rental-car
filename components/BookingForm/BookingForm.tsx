@@ -14,29 +14,29 @@ import css from './BookingForm.module.css';
 interface BookingFormProps {
   carId: string;
 }
-
 type FormErrors = Partial<Record<keyof BookingRequestData, string>>;
 
 const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const NAME_PATTERN = /^[\p{L}][\p{L}\p{M}'’ -]*$/u;
 
-function validate(values: BookingRequestData): FormErrors {
-  const errors: FormErrors = {};
+const NAME_ERROR_MESSAGE = 'Please enter your name.';
+const EMAIL_ERROR_MESSAGE = 'Please enter your email.';
+const COMMENT_ERROR_MESSAGE = 'Comment is required';
 
-  if (!values.name.trim() || !NAME_PATTERN.test(values.name.trim())) {
-    errors.name = 'Please enter your name.';
-  }
-
-  if (!EMAIL_PATTERN.test(values.email.trim())) {
-    errors.email = 'Please enter your email.';
-  }
-
-  if (!values.comment?.trim()) {
-    errors.comment = 'Comment is required';
-  }
-
-  return errors;
-}
+const validationSchema = Yup.object().shape({
+  name: Yup.string()
+    .min(1, NAME_ERROR_MESSAGE)
+    .matches(NAME_PATTERN, NAME_ERROR_MESSAGE)
+    .required(NAME_ERROR_MESSAGE),
+  email: Yup.string()
+    .email()
+    .matches(EMAIL_PATTERN, EMAIL_ERROR_MESSAGE)
+    .min(1, EMAIL_ERROR_MESSAGE)
+    .required(EMAIL_ERROR_MESSAGE),
+  comment: Yup.string()
+    .min(1, COMMENT_ERROR_MESSAGE)
+    .required(COMMENT_ERROR_MESSAGE),
+});
 
 export default function BookingForm({ carId }: BookingFormProps) {
   const formId = useId();
@@ -46,7 +46,7 @@ export default function BookingForm({ carId }: BookingFormProps) {
   >('idle');
 
   const draft = useCarBookingDraftStore(state => state.draft);
-  const setDraft = useCarBookingDraftStore(state => state.setDraft);
+  const setDraftKey = useCarBookingDraftStore(state => state.setDraftKey);
   const clearDraft = useCarBookingDraftStore(state => state.clearDraft);
 
   const mutation = useMutation(
@@ -71,12 +71,8 @@ export default function BookingForm({ carId }: BookingFormProps) {
   ) => {
     const { name, value } = event.target;
     const fieldName = name as keyof BookingRequestData;
-    const currentDraft = draft[carId] ?? { name: '', email: '', comment: '' };
 
-    setDraft(carId, {
-      ...currentDraft,
-      [fieldName]: value,
-    });
+    setDraftKey(carId, fieldName, value);
 
     setErrors(current => {
       if (!current[fieldName]) return current;
@@ -93,24 +89,26 @@ export default function BookingForm({ carId }: BookingFormProps) {
     const formData = new FormData(event.currentTarget);
     const values = Object.fromEntries(formData) as BookingRequestData;
 
-    const nextErrors = validate(values);
-    setErrors(nextErrors);
-
-    if (Object.keys(nextErrors).length > 0) {
-      const firstInvalidField = Object.keys(
-        nextErrors
-      )[0] as keyof BookingRequestData;
-      document.getElementById(`${formId}-${firstInvalidField}`)?.focus();
-      return;
+    try {
+      setErrors({});
+      await validationSchema.validate(values, { abortEarly: false });
+      setStatus('submitting');
+      mutation.mutate({
+        name: values.name.trim(),
+        email: values.email.trim(),
+        comment: values.comment?.trim(),
+      });
+    } catch (err) {
+      if (err instanceof Yup.ValidationError) {
+        const validationErrors: Record<string, string> = {};
+        err.inner.forEach(error => {
+          if (error.path && !validationErrors[error.path]) {
+            validationErrors[error.path] = error.message;
+          }
+        });
+        setErrors(validationErrors);
+      }
     }
-
-    setStatus('submitting');
-
-    mutation.mutate({
-      name: values.name.trim(),
-      email: values.email.trim(),
-      comment: values.comment?.trim(),
-    });
   };
 
   const renderField = (
