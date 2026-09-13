@@ -3,5 +3,13 @@
 import { Toaster } from 'react-hot-toast';
 
 export default function ToastProvider() {
-  return <Toaster position="top-center" reverseOrder={false} />;
+  return (
+    <Toaster
+      position="bottom-center"
+      reverseOrder={false}
+      toastOptions={{
+        duration: 12000,
+      }}
+    />
+  );
 }
