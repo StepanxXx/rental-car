@@ -3,19 +3,12 @@
   width: 100%;
   overflow: hidden;
   color: var(--white);
-  padding: 121px 0 60px;
-}
-
-@media only screen and (min-width: 768px) {
-  .hero {
-    padding: 334px 0 60px;
-  }
-}
-
-@media only screen and (min-width: 1232px) {
-  .hero {
-    padding: 436px 0 60px;
-  }
+  padding: 60px 0;
+  height: calc(100vh - 68px);
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+  align-items: center;
 }
 
 .content {

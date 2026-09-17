@@ -14,25 +14,23 @@ import css from './CarDetails.module.css';
 export default function CarDetails({ car }: { car: Car }) {
   return (
     <div className={`container ${css.carContainer}`}>
-      <div className={css.leftSide}>
-        <div className={css.carImg}>
-          <div className={css.carImgWrapper}>
-            <Image
-              src={car.img}
-              alt={`${car.brand} ${car.model}, ${car.year}`}
-              fill
-              sizes="(min-width: 1232px) 640px, (min-width: 768px) 352px, 343px"
-              loading="eager"
-              priority
-              decoding="async"
-            />
-          </div>
-        </div>
-        <div className={css.carBookingForm}>
-          <BookingForm carId={car.id} />
+      <div className={css.carImg}>
+        <div className={css.carImgWrapper}>
+          <Image
+            src={car.img}
+            alt={`${car.brand} ${car.model}, ${car.year}`}
+            fill
+            sizes="(min-width: 1232px) 640px, (min-width: 768px) 352px, 343px"
+            loading="eager"
+            priority
+            decoding="async"
+          />
         </div>
       </div>
-      <article className={css.carInfoCard}>
+      <div className={css.carBookingForm}>
+        <BookingForm carId={car.id} />
+      </div>
+      <div className={css.carInfoCard}>
         <section className={css.headerSection}>
           <div className={css.header}>
             <h1>
@@ -96,7 +94,7 @@ export default function CarDetails({ car }: { car: Car }) {
             ))}
           </ul>
         </section>
-      </article>
+      </div>
     </div>
   );
 }
